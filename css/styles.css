@@ -169,6 +169,7 @@ nav h1 a {
   width: 100%;
   background-color: #3397DB;
   text-align: center;
+  padding: 10px 0px;
 }
 
 .filter-options h2 {
@@ -197,7 +198,7 @@ nav h1 a {
   background-color: #f3f3f3;
   list-style: outside none none;
   margin: 0;
-  padding: 30px 15px 60px;
+  padding: 0;
   text-align: center;
 }
 
@@ -205,7 +206,7 @@ nav h1 a {
   background-color: #fff;
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
-  margin: 15px;
+  margin: 15px auto;
   min-height: 380px;
   padding: 0 30px 25px;
   text-align: left;

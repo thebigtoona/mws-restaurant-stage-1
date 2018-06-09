@@ -20,11 +20,16 @@
 </header>
 
 <main id="maincontent">
+
+  <!-- map section -->
   <section id="map-container">
     <div id="map"></div>
   </section>
+
+  <!-- filter options -->
   <section>
-    <div class="filter-options">
+
+    <section class="filter-options">
       <h2>Filter Results</h2>
       <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
         <option value="all">All Neighborhoods</option>
@@ -32,9 +37,15 @@
       <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
         <option value="all">All Cuisines</option>
       </select>
-    </div>
-    <ul id="restaurants-list"></ul>
+    </section>
+
+    <!-- restauruant list section -->
+    <section class="restaurants-section">
+      <ul id="restaurants-list"></ul>
+    </section>
+
   </section>
+
 </main>
 
 
