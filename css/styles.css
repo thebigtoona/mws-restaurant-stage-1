@@ -71,7 +71,7 @@ section {
 	display: block;
 }
 
-#maincontent {
+.maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
 }
