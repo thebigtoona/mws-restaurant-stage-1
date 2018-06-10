@@ -243,6 +243,7 @@ nav h1 a {
   color: #fff;
   display: inline-block;
   font-size: 10pt;
+  font-family: "Raleway", Helvetica, sans-serif;
   margin: 15px 0 0;
   padding: 8px 30px 10px;
   text-align: center;
@@ -337,18 +338,73 @@ nav h1 a {
 #reviews-list li {
   background-color: #fff;
   border: 2px solid #f3f3f3;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
   display: block;
   list-style-type: none;
-  margin: 0 auto;
+  margin: 25px auto;
   overflow: hidden;
-  padding: 10px;
   position: relative;
   width: 90%;
+  font-family: "Raleway", Helvetica, sans-serif;
+}
+
+#reviews-list li header {
+  padding: 20px;
+  background: #333;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 #reviews-list li p {
-  margin: 0 0 10px;
+  margin: 0px;
 }
+
+#reviews-list li article {
+  text-align: left;
+  margin: 0px;
+  padding: 20px 20px 25px 20px;
+}
+
+#reviews-list li header p {
+  color: #fff;
+}
+
+#reviews-list .review-name {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-left: 2px;
+  color: white;
+}
+
+#reviews-list .review-date {
+  text-align: right;
+  margin-right: 45px;
+  color: #f3f3f3;
+  padding-top: 2px;
+}
+
+#reviews-list .review-date {
+  color: #cbcbcb;
+}
+
+#reviews-list .review-rating {
+  text-align: center;
+  padding: 6px 2px 4px 2px;
+  margin-right: auto;
+  margin-bottom: 15px;
+  background: orange;
+  border-radius: 3px;
+  border: 1px solid #fff;
+  width: 30%;
+  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
+}
+
+
 
 #restaurant-hours {
   width: 90%;
