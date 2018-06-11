@@ -31,7 +31,7 @@
   <!-- End header -->
 
   <!-- Beginning main -->
-  <main class="maincontent">
+  <main role="main" class="maincontent">
 
     <!-- Beginning map -->
     <section id="map-container">
@@ -39,7 +39,7 @@
     </section><!-- End map -->
 
     <!-- Beginning restaurant -->
-    <section id="restaurant-container">
+    <section tabindex="0" role="article" id="restaurant-container">
       <h1 id="restaurant-name"></h1>
       <img id="restaurant-img">
       <p id="restaurant-cuisine"></p>
@@ -49,8 +49,8 @@
     <!-- end restaurant -->
 
     <!-- Beginning reviews -->
-    <section id="reviews-container">
-      <ul id="reviews-list"></ul>
+    <section tabindex="0" role="select" id="reviews-container">
+      <ul tabindex="0" role="listbox" id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
   </main>
