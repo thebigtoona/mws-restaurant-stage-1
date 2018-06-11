@@ -1,0 +1,9 @@
+@media screen and (min-width: 1200px) {
+  #restaurants-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr)
+  }
+  #restaurants-list li {
+    padding: 1.5rem 2.5rem;
+  }
+}
