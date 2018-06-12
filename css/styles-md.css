@@ -6,4 +6,41 @@
   #restaurants-list li {
     padding: 1.5rem 3rem;
   }
+  #restaurant-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    padding: 2rem 0;
+  }
+
+  #restaurant-name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #restaurant-img {
+    grid-column: 1;
+    grid-row: 2;
+    margin: auto;
+  }
+
+  #restaurant-cuisine {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 10px auto;
+  }
+
+  #restaurant-address {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 1rem auto;
+  }
+
+  #restaurant-hours {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 2rem auto;
+  }
+
+
 }
