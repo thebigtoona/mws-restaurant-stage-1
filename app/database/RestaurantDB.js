@@ -8,6 +8,17 @@ class RestaurantDB {
       }
     })
   }
+
+  static addItem(item) {
+    this.openDatabase().then(db => {
+      const tx = db.transaction('restaurant-data', 'readwrite')
+      const store = tx.objectStore('restaurant-data')
+      store.put(item)
+      return tx.complete
+    })
+  }
+
+
 }
 
 
