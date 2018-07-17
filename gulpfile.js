@@ -73,6 +73,10 @@ gulp.task('sw', () => {
   browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
 })
 
+gulp.task('dbfiles', () => {
+  browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
+})
+
 gulp.task('lint', () => {
   return lint('app/scripts/**/*.js')
     .pipe(gulp.dest('app/scripts'));
@@ -124,7 +128,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'sw'], () => {
+  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'sw', 'dbfiles'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -146,6 +150,7 @@ gulp.task('serve', () => {
     gulp.watch('app/scripts/**/*.js', ['scripts']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('app/sw.js', ['sw']);
+    gulp.watch('app/database/RestaurantDB.js', ['dbfiles']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
@@ -195,7 +200,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw', 'dbfiles'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
