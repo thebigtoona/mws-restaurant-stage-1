@@ -15,7 +15,7 @@ const cachedAssets = [
   'scripts/restaurant_info.js'
 ]
 
-RestaurantDB.openDatabase();
+
 /**
  * install event
  */
@@ -31,6 +31,7 @@ self.addEventListener('install', event => {
  * activate event - delete old caches
  */
 self.addEventListener('activate', event => {
+  RestaurantDB.openDatabase();
   event.waitUntil(
     caches.keys().then(cacheNames => {
       Promise.all(
