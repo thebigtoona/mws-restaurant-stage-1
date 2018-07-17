@@ -1,3 +1,5 @@
+import RestaurantDB from './database/RestaurantDB'
+
 /**
  * setting variables
  */
@@ -13,6 +15,7 @@ const cachedAssets = [
   'scripts/restaurant_info.js'
 ]
 
+RestaurantDB.openDatabase();
 /**
  * install event
  */
