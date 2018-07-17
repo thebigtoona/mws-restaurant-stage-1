@@ -1,16 +1,16 @@
 /**
  * setting variables
  */
-const cacheName = 'restaurant-reviews-v5'
+const cacheName = 'restaurant-reviews-v1'
 const cachedAssets = [
   '/',
   'restaurant.html',
-  'css/styles.css',
-  'css/styles-md.css',
-  'css/styles-lg.css',
-  'js/dbhelper.js',
-  'js/main.js',
-  'js/restaurant_info.js'
+  'styles/styles.css',
+  'styles/styles-md.css',
+  'styles/styles-lg.css',
+  'scripts/dbhelper.js',
+  'scripts/main.js',
+  'scripts/restaurant_info.js'
 ]
 
 /**
