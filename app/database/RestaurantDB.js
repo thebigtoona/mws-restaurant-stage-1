@@ -1,6 +1,7 @@
 import idb from 'idb';
 
 class RestaurantDB {
+
   static openDatabase() {
     return idb.open('mws-restaurant-reviews', 1, upgradeDB => {
       switch (upgradeDB.oldVersion) {
@@ -18,6 +19,14 @@ class RestaurantDB {
     })
   }
 
+  static getItems() {
+    let array = [];
+    this.openDatabase().then(db => {
+      return db.transaction('restaurant-data')
+        .objectStore('restaurant-data').getAll()
+    }).then(items => items.forEach(item => array.push(item)))
+    return array
+  }
 
 }
 
