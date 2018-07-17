@@ -6,10 +6,34 @@ const del = require('del');
 const wiredep = require('wiredep').stream;
 const runSequence = require('run-sequence');
 
+// plugins I added
+const uglify = require('gulp-uglify')
+const babelify = require('babelify');
+const streamify = require('streamify');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+
+
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
 let dev = true;
+
+/**
+ * @description fn to help me with browserify where I need it
+ * @param {*} files the file to transform or an array of files as an array of strings
+ * @param {String} src the src folder of the file
+ * @param {String} destination the directory folder of the altered file
+ */
+const browserTransform = (files, src, destination) => {
+  browserify(files)
+  .transform('babelify')
+  .bundle()
+  .pipe(source(src))
+  .pipe(gulp.dest(destination))
+}
+
+
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')
@@ -35,6 +59,12 @@ gulp.task('scripts', () => {
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe(reload({stream: true}));
 });
+
+gulp.task('sw', () => {
+  gulp.task('sw', () => {
+    browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
+  })
+})
 
 function lint(files) {
   return gulp.src(files)
@@ -115,6 +145,7 @@ gulp.task('serve', () => {
 
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
+    gulp.watch('app/sw.js', ['sw.js']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
@@ -165,7 +196,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
