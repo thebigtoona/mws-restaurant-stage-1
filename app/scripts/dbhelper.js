@@ -1,3 +1,6 @@
+// import modules
+import RestaurantDB from '../database/RestaurantDB'
+
 /**
  * Common database helper functions.
  */
@@ -16,18 +19,30 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    return fetch(DBHelper.DATABASE_URL)
-      .then(res => res.json())
-      .then(restaurants => {
-        restaurants.forEach( restaurant => {
-          if (restaurant.photograph) { restaurant.photograph = `${restaurant.photograph}.jpg` }
-          else { restaurant.photograph = `${restaurant.id}.jpg`}
+
+    RestaurantDB.getItems().then(restaurants => {
+      // if there are no items in the db or the array returned is length 0
+      if ( !restaurants || restaurants.length === 0 ) {
+        return fetch(DBHelper.DATABASE_URL)
+          .then(res => res.json()) // make response json
+          .then(restaurants => {
+            restaurants.forEach( restaurant => {
+              if (restaurant.photograph) { restaurant.photograph = `${restaurant.photograph}.jpg` }
+              else { restaurant.photograph = `${restaurant.id}.jpg`}
+            })
+            restaurants.forEach(restaurant => {
+              RestaurantDB.addItem(restaurant)
+            })
+            return callback(null, restaurants) // return the json array
         })
-        return callback(null, restaurants)
-      })
-      .catch(err => {
-        callback(err, null)
-      });
+          .catch(err => {
+            callback(err, null)
+          });
+
+      } else {
+          return callback(null, restaurants) // return the array from the db
+      }
+    })
   }
 
   /**
@@ -93,6 +108,7 @@ class DBHelper {
         let results = restaurants
         if (cuisine != 'all') { // filter by cuisine
           results = results.filter(r => r.cuisine_type == cuisine);
+
         }
         if (neighborhood != 'all') { // filter by neighborhood
           results = results.filter(r => r.neighborhood == neighborhood);
@@ -167,3 +183,6 @@ class DBHelper {
   }
 
 }
+
+
+export { DBHelper as default }
