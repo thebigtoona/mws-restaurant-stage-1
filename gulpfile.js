@@ -68,13 +68,12 @@ gulp.task('scripts', () => {
     .pipe(reload({stream: true}));
 });
 
-// task for the sw so it can use import statements
 gulp.task('sw', () => {
   browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
-})
-
-gulp.task('dbfiles', () => {
   browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
+  browserTransform(['./app/scripts/dbhelper.js'], 'dbhelper.js', '.tmp/scripts')
+  browserTransform(['./app/scripts/main.js'], 'main.js', '.tmp/scripts')
+  browserTransform(['./app/scripts/restaurant_info.js'], 'restaurant_info.js', '.tmp/scripts')
 })
 
 gulp.task('lint', () => {
@@ -128,7 +127,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'sw', 'dbfiles'], () => {
+  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'sw'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -147,10 +146,10 @@ gulp.task('serve', () => {
     ]).on('change', reload);
 
     gulp.watch('app/styles/**/*.scss', ['styles']);
-    gulp.watch('app/scripts/**/*.js', ['scripts']);
+    gulp.watch('app/scripts/**/*.js', ['scripts', 'sw']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('app/sw.js', ['sw']);
-    gulp.watch('app/database/RestaurantDB.js', ['dbfiles']);
+    gulp.watch('app/database/RestaurantDB.js', ['sw']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
@@ -200,7 +199,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw', 'dbfiles'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
