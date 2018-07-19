@@ -68,7 +68,7 @@ gulp.task('scripts', () => {
     .pipe(reload({stream: true}));
 });
 
-gulp.task('sw', () => {
+gulp.task('browserTransform', () => {
   browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
   browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
   browserTransform(['./app/scripts/dbhelper.js'], 'dbhelper.js', '.tmp/scripts')
@@ -127,7 +127,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'sw'], () => {
+  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'browserTransform'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -146,10 +146,10 @@ gulp.task('serve', () => {
     ]).on('change', reload);
 
     gulp.watch('app/styles/**/*.scss', ['styles']);
-    gulp.watch('app/scripts/**/*.js', ['scripts', 'sw']);
+    gulp.watch('app/scripts/**/*.js', ['scripts', 'browserTransform']);
     gulp.watch('app/fonts/**/*', ['fonts']);
-    gulp.watch('app/sw.js', ['sw']);
-    gulp.watch('app/database/RestaurantDB.js', ['sw']);
+    gulp.watch('app/sw.js', ['browserTransform']);
+    gulp.watch('app/database/RestaurantDB.js', ['browserTransform']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
@@ -199,7 +199,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'sw'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'browserTransform'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
