@@ -20,14 +20,12 @@ class RestaurantDB {
   }
 
   static getItems() {
-    let array = [];
-    this.openDatabase().then(db => {
+    return this.openDatabase().then(db => {
       return db.transaction('restaurant-data')
-        .objectStore('restaurant-data').getAll()
-    }).then(items => items.forEach(item => array.push(item)))
-    return array
+        .objectStore('restaurant-data')
+          .getAll()
+    })
   }
-
 }
 
 
