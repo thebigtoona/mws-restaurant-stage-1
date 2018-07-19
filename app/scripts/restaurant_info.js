@@ -1,5 +1,7 @@
-let restaurant;
-var map;
+import DBHelper from './dbhelper'
+
+window['restaurant'];
+window['map'];
 
 /**
  * Initialize Google map, called from HTML.

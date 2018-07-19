@@ -1,8 +1,13 @@
+// this is the import statement for the dbhelper class
+import DBHelper from './dbhelper'
+
 let restaurants,
-  neighborhoods,
-  cuisines
-var map
-var markers = []
+    neighborhoods,
+    cuisines
+
+// made these explicit to the window object and now it works lol
+window['map']
+window['markers'] = [];
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
