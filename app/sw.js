@@ -31,7 +31,7 @@ self.addEventListener('install', event => {
  * activate event - delete old caches
  */
 self.addEventListener('activate', event => {
-  RestaurantDB.openDatabase();
+  // RestaurantDB.openDatabase();
   event.waitUntil(
     caches.keys().then(cacheNames => {
       Promise.all(
