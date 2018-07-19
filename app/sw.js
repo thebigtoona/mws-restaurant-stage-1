@@ -46,17 +46,9 @@ self.addEventListener('activate', event => {
  * checking cache for assets and serving from cache
  */
 self.addEventListener('fetch', event => {
-  if (event.request.url === 'http://localhost:1337/restaurants') {
-    fetch(event.request)
-      .then(response => response.json())
-      .then(restaurants => restaurants.forEach(restaurant => {
-        RestaurantDB.addItem(restaurant)
-      })) && fetch(event.request)
-  } else {
     event.respondWith(
       caches.match(event.request).then( response =>
         response || fetch(event.request)
       )
     )
-  }
 })
