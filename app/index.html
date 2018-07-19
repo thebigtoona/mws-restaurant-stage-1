@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,17 +37,21 @@
 
     <section class="filter-options">
       <h2>Filter Results</h2>
+      <label>
       <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
         <option value="all">All Neighborhoods</option>
-      </select>
+      </select></label>
+
+      <label>
       <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
         <option value="all">All Cuisines</option>
       </select>
+      </label>
     </section>
 
     <!-- restauruant list section -->
     <section class="restaurants-section">
-      <ul tabindex="0" role="listbox" id="restaurants-list"></ul>
+      <ul tabindex="0" role="list" id="restaurants-list"></ul>
     </section>
 
   </section>
