@@ -9,14 +9,6 @@ let restaurants,
 window['map']
 window['markers'] = [];
 
-/**
- * Fetch neighborhoods and cuisines as soon as the page is loaded.
- */
-document.addEventListener('DOMContentLoaded', (event) => {
-  registerWorker();
-  fetchNeighborhoods();
-  fetchCuisines();
-});
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -200,3 +192,67 @@ const registerWorker = () => {
              .catch(err => console.log(err));
   }
 }
+
+const lazyLoad = () => {
+  // imgs to lazy load
+  const imgs = document.querySelectorAll('img');
+  console.log(imgs)
+
+  // set options for observer
+  const options = {
+    root: null,
+    rootmargin: '0px',
+    threshold: 0.1
+  };
+
+  // fn to fetch the image
+  const fetchImage = (url) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      // if img loads resolve the promise
+      img.onload = resolve;
+      // error
+      img.onerror = reject;
+    })
+  }
+
+  // load img function
+  const loadImage = (img) => {
+    const src = img.dataset.src;
+    // fetch the img and change the src
+    fetchImage(src).then(() => {
+      // change the src here
+      img.src = src;
+    })
+  }
+
+  // handler function
+  const handlerFunction = (entries, observer) => {
+    entries.forEach(entry => {
+      if(entry.intersectionRatio > 0) {
+        loadImage(entry.target)
+      }
+    })
+  }
+
+  // create new observer
+  const observer = new IntersectionObserver(handlerFunction, options);
+
+  imgs.forEach(img => {
+    observer.observe(img);
+  })
+}
+
+
+/**
+ * Fetch neighborhoods and cuisines as soon as the page is loaded.
+ */
+document.addEventListener('DOMContentLoaded', (event) => {
+  registerWorker();
+  fetchNeighborhoods();
+  fetchCuisines();
+});
+
+// lazy load the imgs
+document.addEventListener('load', lazyLoad);
