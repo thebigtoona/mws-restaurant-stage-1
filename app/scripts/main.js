@@ -193,10 +193,12 @@ const registerWorker = () => {
   }
 }
 
+/**
+ * lazy load images
+ */
 const lazyLoad = () => {
-  // imgs to lazy load
-  const imgs = document.querySelectorAll('img');
-  console.log(imgs)
+  // imgs to lazy load (only the restaurant imgs)
+  const imgs = document.querySelectorAll('img.restaurant-img');
 
   // set options for observer
   const options = {
