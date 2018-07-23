@@ -27,8 +27,8 @@ class DBHelper {
           .then(res => res.json()) // make response json
           .then(restaurants => {
             restaurants.forEach( restaurant => {
-              if (restaurant.photograph) { restaurant.photograph = `${restaurant.photograph}.jpg` }
-              else { restaurant.photograph = `${restaurant.id}.jpg`}
+              if (restaurant.photograph) { restaurant.photograph = `${restaurant.photograph}` }
+              else { restaurant.photograph = `${restaurant.id}`}
             })
             restaurants.forEach(restaurant => {
               RestaurantDB.addItem(restaurant)
@@ -164,8 +164,12 @@ class DBHelper {
   /**
    * Restaurant image URL.
    */
-  static imageUrlForRestaurant(restaurant) {
-    return (`/images/${restaurant.photograph}`);
+  static imageUrlForRestaurant(restaurant, src) {
+    if (src === 'src') {
+      return (`/images/${restaurant.photograph}.jpg`);
+    } else {
+      return (`/images/${restaurant.photograph}-8x6_compressed.jpg`);
+    }
   }
 
   /**
