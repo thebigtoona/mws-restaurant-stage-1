@@ -244,6 +244,14 @@ const lazyLoad = () => {
   })
 }
 
+// polyfill for lazy load event handler
+function registerListener(event, func) {
+  if (window.addEventListener) {
+      window.addEventListener(event, func)
+  } else {
+      window.attachEvent('on' + event, func)
+  }
+}
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -254,5 +262,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetchCuisines();
 });
 
-// lazy load the imgs
-document.addEventListener('load', lazyLoad);
+// event handler for lazy loading the imgs
+registerListener('load', lazyLoad);
