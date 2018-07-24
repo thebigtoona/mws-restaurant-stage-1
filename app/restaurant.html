@@ -9,12 +9,28 @@
   <link rel="icon" href="MWSRestaruant.png">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   <!-- Main CSS file -->
   <link rel="stylesheet" href="styles/styles.css" media="screen">
-  <link rel="stylesheet" href="styles/styles-md.css" media="screen and (min-width: 850px)">
-  <link rel="stylesheet" href="styles/styles-lg.css" media="screen and (min-width: 1200px)">
+  <link rel="stylesheet" href="styles/styles-resturant.css" media="screen">
+  <link rel="stylesheet" href="styles/styles-md.css" media="only screen and (min-width: 850px)">
+  <link rel="stylesheet" href="styles/styles-lg.css" media="only screen and (min-width: 1200px)">
   <title>Restaurant Info</title>
+  <style>
+  /* display map button */
+  #map-button {
+      text-align: center;
+      background: #155C8E;
+      margin: 0;
+      padding: 4rem;
+    }
+    #toggle-map {
+      padding: .75rem 1.25rem;
+      margin: .1rem;
+      background: #fdfdfd;
+      box-shadow: none;
+      border: 1px solid lightgray;
+    }
+  </style>
 </head>
 
 <body class="inside">
@@ -38,6 +54,11 @@
 
   <!-- Beginning main -->
   <main role="main" class="maincontent">
+    <section id="map-button">
+        <button id="toggle-map">
+          Show Map
+        </button>
+      </section>
 
     <!-- Beginning map -->
     <section id="map-container">
@@ -72,10 +93,18 @@
   <!-- Database helpers -->
   <!-- Main javascript file -->
   <script type="text/javascript" src="scripts/restaurant_info.js"></script>
+
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4h4lyHx9tbQTbBl5ae4JGRRmsgnlAdgk&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 
+  <script>
+      const mapBtn = document.getElementById('toggle-map');
+      const showMap = (e) => {
+        document.getElementById('map-container').style.display = "block";
+        document.getElementById('map-button').style.display = "none";
+      }
+      mapBtn.addEventListener('click', showMap);
+  </script>
 </body>
-
 </html>

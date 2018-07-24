@@ -54,8 +54,13 @@
     </nav>
 </header>
 
-<main role="main" class="maincontent" style="max-width: 800px;">
+<main role="main" class="maincontent">
 
+  <section id="map-button">
+    <button id="toggle-map">
+      Show Map
+    </button>
+  </section>
   <!-- map section -->
   <section id="map-container">
     <div aria-label="map" role="application" id="map"></div>
@@ -88,10 +93,19 @@
 </main>
 
 
+
+
+
 <!-- script section -->
 <script type="application/javascript" charset="utf-8" src="scripts/main.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4h4lyHx9tbQTbBl5ae4JGRRmsgnlAdgk&libraries=places&callback=initMap"></script>
 <script>
+  const mapBtn = document.getElementById('toggle-map');
+  const showMap = (e) => {
+    document.getElementById('map-container').style.display = "block";
+    document.getElementById('map-button').style.display = "none";
+  }
+  mapBtn.addEventListener('click', showMap)
 </script>
 
 <!-- footer section -->
