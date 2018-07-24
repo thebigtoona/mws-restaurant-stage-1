@@ -8,15 +8,44 @@
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" href="MWSRestaruant.png">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   <link rel="stylesheet" href="styles/styles.css" media="screen">
-  <link rel="stylesheet" href="styles/styles-md.css" media="screen and (min-width: 850px)">
-  <link rel="stylesheet" href="styles/styles-lg.css" media="screen and (min-width: 1200px)">
+  <link rel="stylesheet" href="styles/styles-home.css" media="screen">
+  <link rel="stylesheet" href="styles/styles-md.css" media="only screen and (min-width: 850px)">
+  <link rel="stylesheet" href="styles/styles-lg.css" media="only screen and (min-width: 1200px)">
+
   <title>Restaurant Reviews</title>
+  <style>
+    body {
+      background: #f3f3f3;
+    }
+    .maincontent {
+      max-width: 1800px;
+    }
+    nav {
+      max-width: 1770px;
+    }
+    .maincontent, nav {
+      margin: 0 auto;
+      border: 1px solid lightgray;
+    }
+    /* display map button */
+    #map-button {
+      text-align: center;
+      background: #155C8E;
+      margin: 0;
+      padding: 4rem;
+    }
+    #toggle-map {
+      padding: .75rem 1.25rem;
+      margin: .1rem;
+      background: #fdfdfd;
+      box-shadow: none;
+      border: 1px solid lightgray;
+    }
+  </style>
 </head>
 
 <body>
-
 <header>
   <nav class="main-nav">
       <div class="container">
