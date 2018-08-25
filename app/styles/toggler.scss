@@ -1,0 +1,109 @@
+// I added variables and nested elements but credit goes to pen below
+// Credit: https://codepen.io/scottohara/pen/zLZwNv
+
+// variables
+$toggle-on-background: #4BB543;
+$toggle-off-background: #f3f3f3;
+$toggle-bg-color: #fff;
+$toggle-text: inherit;
+
+// radio switch styles
+.radio-switch {
+  color: $toggle-text;
+  // font-size: .5rem;
+  border: none; // remove border
+  white-space: nowrap; // keep whitespace on 1 line
+  padding: 0; // remove padding
+
+  legend {
+    font-size: 2px;
+  }
+
+  legend,
+  input {
+    opacity: 0;
+    position: absolute;
+  }
+
+  label {
+    font-size: 10px;
+    display: inline-block; // keep inline
+    position: relative; // helps the pseudo elements
+    z-index: 2;
+    line-height: 2.3;
+    // show map label
+    &:first-of-type {
+      padding-right: 5em;
+    }
+
+    // hide map label
+    &:last-child {
+      margin-left: -4.5em; // so it can overlap
+      padding-left: 5em;
+      // opacity: 0; // hide second label visually
+    }
+
+    // the switch ui
+    &:first-of-type:before,
+    &:first-of-type:after {
+      border: 1px solid #aaa;
+      content: '';
+      height: 2em;
+      overflow: hidden;
+      pointer-events: none;
+      position: absolute;
+      vertical-align: middle;
+    }
+
+    // the circle
+    &:first-of-type:before {
+      background: $toggle-bg-color;
+      border: 1px solid #aaa;
+      border-radius: 100%; // circle
+      position: absolute;
+      right: -.075em;
+      transform: translateX(0em);
+      transition: transform .2s ease-in-out;
+      width: 2em;
+      z-index: 2;
+    }
+
+    // the big oval
+    &:first-of-type:after {
+      background: $toggle-off-background;
+      border-radius: 1em; // oval
+      margin: 0 1em;
+      transition: background .2s ease-in-out; // transition on the background
+      width: 4em;
+    }
+
+  } // end label
+
+  input {
+    // when checked
+    &:first-of-type:checked ~ label:first-of-type:after {
+      background: $toggle-on-background;
+    }
+
+    &:first-of-type:checked ~ label:first-of-type:before {
+      transform: translateX(-2em);
+    }
+
+    // for checkbox instead of radio
+    &:first-of-type:not(:checked) ~ label:first-of-type:after {
+      background: $toggle-off-background;
+    }
+
+    // for radio instead of checkbox
+    // &:last-of-type:checked ~ label:last-of-type {
+    //   z-index: 1;
+    // }
+  } // end input
+
+  // .radio-switch focus within and polyfill for that
+  &:focus-within label:first-of-type:after,
+  &.radio-switch.focus-within label:first-of-type:after {
+    box-shadow: 0 0 0 2px $toggle-bg-color, 0 0 0 4px $toggle-on-background;
+  }
+
+} // end .radio-switch

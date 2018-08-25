@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles/styles-home.css" media="screen">
   <link rel="stylesheet" href="styles/styles-md.css" media="only screen and (min-width: 850px)">
   <link rel="stylesheet" href="styles/styles-lg.css" media="only screen and (min-width: 1200px)">
+  <link rel="stylesheet" href="styles/toggler.css" media="screen">
 
   <title>Restaurant Reviews</title>
   <style>
@@ -23,24 +24,24 @@
     }
     nav {
       max-width: 1770px;
+      align-items: center;
+    }
+    .nav-toggle {
+      position: absolute;
+      top: 50px;
+      right: 150px;
     }
     .maincontent, nav {
       margin: 0 auto;
       border: 1px solid lightgray;
     }
-    /* display map button */
-    #map-button {
-      text-align: center;
-      background: #155C8E;
-      margin: 0;
-      padding: 4rem;
+    #map-container {
+      transition: .2s
     }
-    #toggle-map {
-      padding: .75rem 1.25rem;
-      margin: .1rem;
-      background: #fdfdfd;
-      box-shadow: none;
-      border: 1px solid lightgray;
+    #favorite-switch-section {
+      padding-top: 15px;
+      padding-left: 20px;
+      padding-bottom: 15px;
     }
   </style>
 </head>
@@ -49,18 +50,29 @@
 <header>
   <nav class="main-nav">
       <div class="container">
-        <h1><a href="/">Restaurant Reviews</a></h1>
+        <div class="nav-heading">
+          <h1><a href="/">Restaurant Reviews</a></h1>
+        </div>
+        <div class="map-toggle">
+          <fieldset aria-label="Map Options" class="radio-switch" role="radiogroup">
+            <legend>Map Options</legend>
+            <input type="checkbox" name="lol" id="show-map">
+            <label for="show-map">
+              Show Map
+            </label>
+            <!-- <input type="radio" name="lol" id="hide-map">
+            <label for="hide-map">
+              Hide Map
+            </label> -->
+          </fieldset>
+        </div>
       </div>
     </nav>
 </header>
 
 <main role="main" class="maincontent">
 
-  <section id="map-button">
-    <button id="toggle-map">
-      Show Map
-    </button>
-  </section>
+
   <!-- map section -->
   <section id="map-container">
     <div aria-label="map" role="application" id="map"></div>
@@ -85,6 +97,15 @@
 
     <!-- restauruant list section -->
     <section class="restaurants-section">
+      <div id="favorite-switch-section">
+        <fieldset aria-label="Show Favorites" class="radio-switch" role="radiogroup">
+          <legend>Show Favorites</legend>
+          <input type="checkbox" name="lol" id="favorite-switch">
+          <label for="favorite-switch">
+            Show Favorites
+          </label>
+        </fieldset>
+      </div>
       <ul tabindex="0" role="list" id="restaurants-list"></ul>
     </section>
 
@@ -100,12 +121,49 @@
 <script type="application/javascript" charset="utf-8" src="scripts/main.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4h4lyHx9tbQTbBl5ae4JGRRmsgnlAdgk&libraries=places&callback=initMap"></script>
 <script>
-  const mapBtn = document.getElementById('toggle-map');
-  const showMap = (e) => {
-    document.getElementById('map-container').style.display = "block";
-    document.getElementById('map-button').style.display = "none";
+  /**
+  Focus within pollyfill
+  Credit: https://gist.github.com/aFarkas/a7e0d85450f323d5e164
+  */
+  (function(window, document){
+  'use strict';
+  var slice = [].slice;
+  var removeClass = function(elem){
+    elem.classList.remove('focus-within');
+  };
+  var update = (function(){
+    var running, last;
+    var action = function(){
+      var element = document.activeElement;
+      running = false;
+      if(last !== element){
+        last = element;
+        slice.call(document.getElementsByClassName('focus-within')).forEach(removeClass);
+        while(element && element.classList){
+          element.classList.add('focus-within');
+          element = element.parentNode;
+        }
+      }
+    };
+    return function(){
+      if(!running){
+        requestAnimationFrame(action);
+        running = true;
+      }
+    };
+  })();
+  document.addEventListener('focus', update, true);
+  document.addEventListener('blur', update, true);
+  update();
+  })(window, document);
+
+  // toggle the map
+  const mapToggle = document.querySelector('#show-map')
+  const showMap = function (e) { // has to be a normal function (scope reasons)
+    if (this.checked) document.getElementById('map-container').style.display = 'block'
+    else document.getElementById('map-container').style.display = 'none'
   }
-  mapBtn.addEventListener('click', showMap)
+  mapToggle.addEventListener('change', showMap)
 </script>
 
 <!-- footer section -->
