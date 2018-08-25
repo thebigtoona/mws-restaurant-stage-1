@@ -4,7 +4,7 @@
 
 // variables
 $toggle-on-background: #4BB543;
-$toggle-off-background: #f3f3f3;
+$toggle-off-background: #e3e3e3;
 $toggle-bg-color: #fff;
 $toggle-text: inherit;
 
@@ -40,7 +40,7 @@ $toggle-text: inherit;
     // hide map label
     &:last-child {
       margin-left: -4.5em; // so it can overlap
-      padding-left: 5em;
+      padding-left: 5.1em;
       // opacity: 0; // hide second label visually
     }
 
