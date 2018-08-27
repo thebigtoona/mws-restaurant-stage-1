@@ -1,9 +1,9 @@
 // this is the import statement for the dbhelper class
-import DBHelper from './dbhelper'
+import DBHelper from './dbhelper';
 
 let restaurants,
     neighborhoods,
-    cuisines
+    cuisines;
 
 // made these explicit to the window object and now it works lol
 window['map']
@@ -84,7 +84,7 @@ window.initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
-const updateRestaurants = () => {
+window.updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 

@@ -39,9 +39,10 @@ $toggle-text: inherit;
 
     // hide map label
     &:last-child {
-      margin-left: -4.5em; // so it can overlap
-      padding-left: 5.1em;
+      // margin-left: -4.5em; // so it can overlap for radio
+      // padding-left: 5.1em;
       // opacity: 0; // hide second label visually
+      margin-left: 2em;
     }
 
     // the switch ui

@@ -34,11 +34,7 @@
     #map-container {
       transition: .2s
     }
-    #favorite-switch-section {
-      padding-top: 15px;
-      padding-left: 20px;
-      padding-bottom: 15px;
-    }
+
   </style>
 </head>
 
@@ -49,6 +45,8 @@
         <div class="nav-heading">
           <h1><a href="/">Restaurant Reviews</a></h1>
         </div>
+        <div class="top-toggles">
+        <!--  map toggle -->
         <div class="map-toggle">
           <fieldset aria-label="Map Options" class="radio-switch" role="radiogroup">
             <legend>Map Options</legend>
@@ -62,12 +60,23 @@
             </label> -->
           </fieldset>
         </div>
+        <!--  favorites toggle -->
+        <div id="favorite-switch-section">
+          <fieldset aria-label="Show Favorites" class="radio-switch" role="radiogroup">
+            <legend>Show Favorites</legend>
+            <input type="checkbox" name="lol" id="favorite-switch">
+            <label for="favorite-switch">
+              Show Favorites
+            </label>
+          </fieldset>
+        </div>
+        </div>
+        <!-- end toggles -->
       </div>
     </nav>
 </header>
 
 <main role="main" class="maincontent">
-
 
   <!-- map section -->
   <section id="map-container">
@@ -91,17 +100,10 @@
       </label>
     </section>
 
+
+
     <!-- restauruant list section -->
     <section class="restaurants-section">
-      <div id="favorite-switch-section">
-        <fieldset aria-label="Show Favorites" class="radio-switch" role="radiogroup">
-          <legend>Show Favorites</legend>
-          <input type="checkbox" name="lol" id="favorite-switch">
-          <label for="favorite-switch">
-            Show Favorites
-          </label>
-        </fieldset>
-      </div>
       <ul tabindex="0" role="list" id="restaurants-list"></ul>
     </section>
 
@@ -114,7 +116,6 @@
 
 
 <!-- script section -->
-<script type="application/javascript" charset="utf-8" src="scripts/main.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4h4lyHx9tbQTbBl5ae4JGRRmsgnlAdgk&libraries=places&callback=initMap"></script>
 <script>
   /**
@@ -161,6 +162,7 @@
   }
   mapToggle.addEventListener('change', showMap)
 </script>
+<script type="application/javascript" charset="utf-8" src="scripts/main.js"></script>
 
 <!-- footer section -->
 <footer id="footer">

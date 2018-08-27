@@ -3,7 +3,7 @@ nav {
   padding: 1rem;
   max-width: 100%;
   // min-height: 80px;
-  background-color: #252831;
+  background-color: $primary-color;
   text-align:center;
   color: #fff;
   h1 {
@@ -56,4 +56,16 @@ nav {
         }
     }
   }
+}
+
+.top-toggles {
+  display: inline-flex;
+}
+
+#favorite-switch-section {
+  padding-bottom: 15px;
+}
+
+.map-toggle label {
+  margin-left: 0 !important;
 }
