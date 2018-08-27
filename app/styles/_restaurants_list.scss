@@ -12,9 +12,9 @@
     font-family: Arial,sans-serif;
     margin: 15px auto;
     min-height: 380px;
-    padding: 1rem 2rem;
+    padding: .5rem .5rem;
     text-align: left;
-    width: 270px;
+    width: 350px;
 
     // img
     .restaurant-img {
@@ -57,4 +57,9 @@
       text-transform: uppercase;
     }
   }
+}
+
+.restaruants-section {
+  max-width: 1400px;
+  margin: 0 auto;
 }

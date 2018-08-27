@@ -92,7 +92,7 @@ section {
 }
 
 @mixin mediaMd {
-  @media screen and (min-width: 850px) and (max-width: 1199px) {
+  @media screen and (min-width: 850px) {
     @content;
   }
 }
