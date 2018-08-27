@@ -25,7 +25,7 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
 
-    RestaurantDB.getItems().then(restaurants => {
+    RestaurantDB.getRestaurants().then(restaurants => {
       // if there are no items in the db or the array returned is length 0
       if ( !restaurants || restaurants.length === 0 ) {
         return fetch(DBHelper.DATABASE_URL)
@@ -36,7 +36,7 @@ class DBHelper {
               else { restaurant.photograph = `${restaurant.id}`}
             })
             restaurants.forEach(restaurant => {
-              RestaurantDB.addItem(restaurant)
+              RestaurantDB.addRestaurant(restaurant)
             })
             return callback(null, restaurants) // return the json array
         })
@@ -48,6 +48,23 @@ class DBHelper {
           return callback(null, restaurants) // return the array from the db
       }
     })
+  }
+
+  static fetchFavorites(callback) {
+    RestaurantDB.getFavorites()
+      .then(favorites => {
+        if (!favorites || favorites.length === 0) {
+          return fetch(DBHelper.FAVORITES_URL)
+            .then(res => res.json())
+            .then(favorites => {
+              favorites.forEach(f => RestaurantDB.addFavorite(f))
+              return callback(null, favorites)
+            })
+            .catch(err => callback(err, null))
+        } else {
+          return callback(null, favorites)
+        }
+      })
   }
 
   /**

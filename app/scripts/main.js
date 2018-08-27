@@ -182,9 +182,12 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 }
 
 // toggle viewing your favorites
-const showFavorites = (e) => {
-  (e.srcElement.checked) ? console.log(`Show Favorites Not Linked Yet`)
-  : console.log(`Not Checked`)
+const showFavorites = (e, restaurants = self.restaurants) => {
+  (e.srcElement.checked)
+    ? DBHelper.fetchFavorites( (err, favorites) => {
+      console.log(favorites)
+    })
+    : console.log(restaurants)
 }
 
 /**

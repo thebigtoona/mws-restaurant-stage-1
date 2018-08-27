@@ -5,12 +5,31 @@ class RestaurantDB {
   static openDatabase() {
     return idb.open('mws-restaurant-reviews', 1, upgradeDB => {
       switch (upgradeDB.oldVersion) {
-        case 0: upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'})
+        case 0:
+          upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'});
+        case 1:
+          upgradeDB.createObjectStore('favorites', {keyPath: 'id'});
       }
+    });
+  }
+
+  static getRestaurants() {
+    return this.openDatabase().then(db => {
+      return db.transaction('restaurant-data')
+        .objectStore('restaurant-data')
+          .getAll()
     })
   }
 
-  static addItem(item) {
+  static getFavorites() {
+    return this.openDatabase().then(db => {
+      return db.transaction('favorites')
+        .objectStore('favorites')
+          .getAll()
+    })
+  }
+
+  static addRestaurant(item) {
     this.openDatabase().then(db => {
       const tx = db.transaction('restaurant-data', 'readwrite')
       const store = tx.objectStore('restaurant-data')
@@ -19,12 +38,14 @@ class RestaurantDB {
     })
   }
 
-  static getItems() {
-    return this.openDatabase().then(db => {
-      return db.transaction('restaurant-data')
-        .objectStore('restaurant-data')
-          .getAll()
-    })
+  static addFavorite(item) {
+    this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('favorites', 'readwrite')
+        const store = tx.objectStore('favorites')
+        store.put(item)
+        return tx.complete;
+      })
   }
 }
 
