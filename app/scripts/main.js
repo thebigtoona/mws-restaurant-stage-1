@@ -181,14 +181,14 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
   });
 }
 
-const fetchRestaurantsByFavorite = () => {
-  fetch(DBHelper.FAVORITES_URL)
-    .then(res => res.json())
-    .then(favorites => {
-      self.restaurants = favorites;
-    })
-    .catch(err => console.log(`ERROR: ${err}`))
-}
+// const fetchRestaurantsByFavorite = () => {
+//   fetch(DBHelper.FAVORITES_URL)
+//     .then(res => res.json())
+//     .then(favorites => {
+//       self.restaurants = favorites;
+//     })
+//     .catch(err => console.log(`ERROR: ${err}`))
+// }
 
 /**
  * register service worker
@@ -277,4 +277,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
 registerListener('load', lazyLoad);
 
 // event handler for Favorites
-document.querySelector('#favorite-switch').addEventListener('change', fetchRestaurantsByFavorite);
+// document.querySelector('#favorite-switch').addEventListener('change', fetchRestaurantsByFavorite);
