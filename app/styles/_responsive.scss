@@ -1,5 +1,6 @@
-/* at medium */
-@media screen and (min-width: 850px) {
+@import 'config';
+
+@include mediaMd {
   #restaurants-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr)
@@ -42,5 +43,15 @@
     grid-row: 2;
     margin: 2rem auto;
   }
+}
 
+
+@include mediaLg {
+  #restaurants-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr)
+  }
+  #restaurants-list li {
+    padding: 1.5rem 2.5rem;
+  }
 }

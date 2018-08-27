@@ -1,0 +1,99 @@
+/*  theme styles */
+body,
+td,
+th,
+p {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #333;
+  line-height: 1.5;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+ul,
+li {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	color: #333;
+}
+
+a {
+	color: orange;
+	text-decoration: none;
+}
+
+a:hover,
+a:focus {
+	color: #3397db;
+	text-decoration: none;
+}
+
+a img {
+	border: none 0px #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0 0 20px;
+}
+
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+/*  Global Classes */
+
+/* a container class to hold the elements centered after 1200px */
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px;
+}
+
+
+
+/*  Media Queries */
+@mixin mediaSm {
+  @media screen and (max-width: 849px) {
+    @content;
+  }
+}
+
+@mixin mediaMd {
+  @media screen and (min-width: 850px) and (max-width: 1199px) {
+    @content;
+  }
+}
+
+@mixin mediaLg {
+  @media screen and (min-width: 1200px) {
+    @content;
+  }
+}

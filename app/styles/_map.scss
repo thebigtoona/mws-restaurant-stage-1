@@ -1,0 +1,26 @@
+/* ====================== Map ====================== */
+#map-container {
+  max-width: 100%;
+  display: none;
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+  background-color: #ccc;
+  display: inherit;
+}
+
+
+// individual listing
+.inside #map-container {
+  background: blue none repeat scroll 0 0;
+  width: 100%;
+  /* margin: 164px 0 0 0; */
+}
+
+.inside #map {
+  background-color: #ccc;
+  height: 400px;
+  width: 100%;
+}

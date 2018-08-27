@@ -1,4 +1,4 @@
-/* ====================== Restaurant Details ====================== */
+/* ====================== Listing Details ====================== */
 .inside header {
   /* position: fixed; */
   top: 0;
@@ -6,31 +6,13 @@
   z-index: 1000;
 }
 
-.inside #map-container {
-  background: blue none repeat scroll 0 0;
-  width: 100%;
-  /* margin: 164px 0 0 0; */
-}
-
-.inside #map {
-  background-color: #ccc;
-  height: 400px;
-  width: 100%;
-}
-
-.inside #footer {
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
-
 #restaurant-name {
   color: #155C8E;
   font-family: Arial,sans-serif;
-  font-size: 20pt;
+  font-size: 2rem;
   font-weight: 200;
   letter-spacing: 0;
-  margin: 1rem 0 1rem;
+  margin: 2rem 0;
   text-transform: uppercase;
   line-height: 1.1;
 }

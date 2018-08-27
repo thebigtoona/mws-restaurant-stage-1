@@ -1,0 +1,59 @@
+/* ====================== Navigation ====================== */
+nav {
+  padding: 1rem;
+  max-width: 100%;
+  // min-height: 80px;
+  background-color: #252831;
+  text-align:center;
+  color: #fff;
+  h1 {
+    margin: auto;
+    padding: .5rem 0;
+    a {
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 100;
+      letter-spacing: .5rem;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+
+  // TODO: test this nav style
+  // breadcrumb navigation
+  &.breadcrumb {
+    background: #eee;
+    max-height: 30px;
+    padding-left: 0;
+    #breadcrumb {
+        padding-left: 0;
+        list-style: none;
+        background-color: #eee;
+        margin: 0;
+
+        /* Display list items side by side */
+        li {
+            display: inline;
+
+            /* Add a slash symbol (/) before/behind each list item */
+            &+li:before {
+                padding: 8px;
+                color: black;
+                content: "/\00a0";
+            }
+
+            /* Add a color to all links inside the list */
+            a {
+                color: #155C8E;
+                text-decoration: none;
+                text-transform: uppercase;
+                /* Add a color on mouse-over */
+                &:hover {
+                    color: #01447e;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+  }
+}

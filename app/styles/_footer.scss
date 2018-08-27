@@ -1,0 +1,23 @@
+/*=================================== Footer ===============================*/
+#footer {
+  background-color: #252831;
+  color: #fff;
+  font-size: .5rem;
+  letter-spacing: 1px;
+  padding: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+
+// individual listing footer
+.inside #footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

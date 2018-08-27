@@ -1,0 +1,60 @@
+/* ====================== Restaurant Listing ====================== */
+#restaurants-list {
+  background-color: #f3f3f3;
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+
+  li {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    font-family: Arial,sans-serif;
+    margin: 15px auto;
+    min-height: 380px;
+    padding: 1rem 2rem;
+    text-align: left;
+    width: 270px;
+
+    // img
+    .restaurant-img {
+      background-color: #ccc;
+      display: block;
+      margin: 0;
+      max-width: 100%;
+      min-height: 248px;
+      min-width: 100%;
+    }
+
+    // restaurant heading
+    h2 {
+      color: #155C8E;
+      font-family: Arial,sans-serif;
+      font-size: 14pt;
+      font-weight: 200;
+      letter-spacing: 0;
+      line-height: 1.3;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0;
+      font-size: 11pt;
+    }
+
+    a {
+      background-color: #155C8E;
+      border-bottom: 3px solid #eee;
+      color: #fff;
+      display: inline-block;
+      font-size: 10pt;
+      font-family: "Raleway", Helvetica, sans-serif;
+      margin: 15px 0 0;
+      padding: 8px 30px 10px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+  }
+}
