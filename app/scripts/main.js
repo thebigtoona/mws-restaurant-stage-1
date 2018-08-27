@@ -181,6 +181,15 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
   });
 }
 
+const fetchRestaurantsByFavorite = () => {
+  fetch(DBHelper.FAVORITES_URL)
+    .then(res => res.json())
+    .then(favorites => {
+      self.restaurants = favorites;
+    })
+    .catch(err => console.log(`ERROR: ${err}`))
+}
+
 /**
  * register service worker
  */
@@ -266,3 +275,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 // event handler for lazy loading the imgs
 registerListener('load', lazyLoad);
+
+// event handler for Favorites
+document.querySelector('#favorite-switch').addEventListener('change', fetchRestaurantsByFavorite);

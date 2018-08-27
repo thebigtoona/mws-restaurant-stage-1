@@ -15,6 +15,11 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
+  static get FAVORITES_URL() {
+    const url = DBHelper.DATABASE_URL;
+    return `${url}/?is_favorite=true`;
+  }
+
   /**
    * Fetch all restaurants.
    */
