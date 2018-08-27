@@ -3,7 +3,7 @@ import RestaurantDB from './database/RestaurantDB'
 /**
  * setting variables
  */
-const cacheName = 'restaurant-reviews-v2'
+const cacheName = 'restaurant-reviews-v3'
 const cachedAssets = [
   '/',
   'restaurant.html',

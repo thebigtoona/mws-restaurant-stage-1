@@ -181,14 +181,11 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
   });
 }
 
-// const fetchRestaurantsByFavorite = () => {
-//   fetch(DBHelper.FAVORITES_URL)
-//     .then(res => res.json())
-//     .then(favorites => {
-//       self.restaurants = favorites;
-//     })
-//     .catch(err => console.log(`ERROR: ${err}`))
-// }
+// toggle viewing your favorites
+const showFavorites = (e) => {
+  (e.srcElement.checked) ? console.log(`Show Favorites Not Linked Yet`)
+  : console.log(`Not Checked`)
+}
 
 /**
  * register service worker
@@ -276,5 +273,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 // event handler for lazy loading the imgs
 registerListener('load', lazyLoad);
 
-// event handler for Favorites
-// document.querySelector('#favorite-switch').addEventListener('change', fetchRestaurantsByFavorite);
+// toggle the map
+const favoriteToggle = document.querySelector('#favorite-switch')
+favoriteToggle.addEventListener('change', showFavorites)
