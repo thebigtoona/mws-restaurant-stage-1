@@ -43,7 +43,6 @@ class DBHelper {
           .catch(err => {
             callback(err, null)
           });
-
       } else {
           return callback(null, restaurants) // return the array from the db
       }

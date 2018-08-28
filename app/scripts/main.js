@@ -104,6 +104,7 @@ window.updateRestaurants = () => {
   })
 }
 
+
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
