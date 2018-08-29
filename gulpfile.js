@@ -8,6 +8,7 @@ const runSequence = require('run-sequence');
 
 // plugins I added
 const uglify = require('gulp-uglify')
+const cssnano = require('gulp-cssnano')
 const babelify = require('babelify');
 const streamify = require('streamify');
 const browserify = require('browserify');
@@ -53,6 +54,7 @@ gulp.task('styles', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.if(dev, $.sourcemaps.write()))
+    .pipe(cssnano()) // minifyCSS
     .pipe(gulp.dest('.tmp/styles'))
     .pipe(reload({stream: true}));
 });
@@ -64,6 +66,7 @@ gulp.task('scripts', () => {
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.babel())
     .pipe($.if(dev, $.sourcemaps.write('.')))
+    // .pipe(uglify())
     .pipe(gulp.dest('.tmp/scripts'))
     .pipe(reload({stream: true}));
 });
