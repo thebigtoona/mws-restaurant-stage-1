@@ -66,6 +66,7 @@ $toggle-text: inherit;
       right: -.075em;
       transform: translateX(0em);
       transition: transform .2s ease-in-out;
+      will-change: transform;
       width: 2em;
       z-index: 2;
     }
@@ -89,6 +90,7 @@ $toggle-text: inherit;
 
     &:first-of-type:checked ~ label:first-of-type:before {
       transform: translateX(-2em);
+      will-change: transform;
     }
 
     // for checkbox instead of radio

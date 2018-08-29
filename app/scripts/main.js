@@ -189,14 +189,17 @@ const showFavorites = (e, restaurants = self.restaurants) => {
       resetRestaurants(favorites)
       addMarkersToMap(favorites)
       fillRestaurantsHTML(favorites)
+      lazyLoad()
     })
   } else {
     DBHelper.fetchRestaurants( (err, restaruants) => {
       resetRestaurants(restaruants)
       addMarkersToMap(restaruants)
       fillRestaurantsHTML(restaruants)
+      lazyLoad()
     })
   }
+  window.requestAnimationFrame(showFavorites)
 }
 
 /**
@@ -280,11 +283,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
   registerWorker();
   fetchNeighborhoods();
   fetchCuisines();
+  lazyLoad();
 });
 
 // event handler for lazy loading the imgs
 registerListener('load', lazyLoad);
 
-// toggle the map
+// toggle the favorites
 const favoriteToggle = document.querySelector('#favorite-switch')
 favoriteToggle.addEventListener('change', showFavorites)
