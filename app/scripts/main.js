@@ -184,11 +184,19 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 
 // toggle viewing your favorites
 const showFavorites = (e, restaurants = self.restaurants) => {
-  (e.srcElement.checked)
-    ? DBHelper.fetchFavorites( (err, favorites) => {
-      console.log(favorites)
+  if (e.srcElement.checked) {
+    DBHelper.fetchFavorites( (err, favorites) => {
+      resetRestaurants(favorites)
+      addMarkersToMap(favorites)
+      fillRestaurantsHTML(favorites)
     })
-    : console.log(restaurants)
+  } else {
+    DBHelper.fetchRestaurants( (err, restaruants) => {
+      resetRestaurants(restaruants)
+      addMarkersToMap(restaruants)
+      fillRestaurantsHTML(restaruants)
+    })
+  }
 }
 
 /**
