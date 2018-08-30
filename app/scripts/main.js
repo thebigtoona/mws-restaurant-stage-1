@@ -157,6 +157,15 @@ window.updateRestaurants = () => {
   }
 }
 
+function addRemoveFavorite(e) {
+  if ( e.target.classList.contains('favorite-btn') ) {
+    if ( e.target.innerHTML == '❤' ) {
+      e.target.innerHTML = '♡'
+    } else {
+      e.target.innerHTML = '❤'
+    }
+  }
+}
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
@@ -203,6 +212,17 @@ const createRestaurantHTML = (restaurant) => {
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   li.append(name);
+
+  // favorite button
+  const favorite = document.createElement('button')
+  favorite.className = 'favorite-btn'
+  if (restaurant.is_favorite) {
+    favorite.innerHTML = '❤';
+  } else {
+    favorite.innerHTML = '♡';
+  }
+  li.append(favorite)
+
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
@@ -349,3 +369,5 @@ registerListener('load', lazyLoad);
 // toggle the favorites
 const favoriteToggle = document.querySelector('#favorite-switch')
 favoriteToggle.addEventListener('change', showFavorites)
+// favorite btns event listener
+document.addEventListener('click', addRemoveFavorite)
