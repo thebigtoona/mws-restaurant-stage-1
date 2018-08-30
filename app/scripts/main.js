@@ -24,11 +24,31 @@ const fetchNeighborhoods = () => {
   });
 }
 
+const fetchFavoriteNeighborhoods = () => {
+  DBHelper.fetchFavoriteNeighborhoods((error, neighborhoods) => {
+    if (error) { // Got an error
+      console.error(error);
+    } else {
+      self.neighborhoods = neighborhoods;
+      fillNeighborhoodsHTML();
+    }
+  });
+}
+
 /**
  * Set neighborhoods HTML.
  */
 const fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   const select = document.getElementById('neighborhoods-select');
+  while (select.firstChild) {
+    select.removeChild(select.firstChild) // clear out selections
+  }
+
+  const option = document.createElement('option');
+  option.innerHTML = 'All Neighborhoods';
+  option.value = 'All Neighborhoods';
+  select.append(option);
+
   neighborhoods.forEach(neighborhood => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
@@ -51,11 +71,30 @@ const fetchCuisines = () => {
   });
 }
 
+const fetchFavoriteCuisines = () => {
+  DBHelper.fetchFavoriteCuisines((error, cuisines) => {
+    if (error) { // Got an error!
+      console.error(error);
+    } else {
+      self.cuisines = cuisines;
+      fillCuisinesHTML();
+    }
+  });
+}
+
 /**
  * Set cuisines HTML.
  */
 const fillCuisinesHTML = (cuisines = self.cuisines) => {
   const select = document.getElementById('cuisines-select');
+  while (select.firstChild) {
+    select.removeChild(select.firstChild) // clear out selections
+  }
+
+  const option = document.createElement('option');
+  option.innerHTML = 'All Cuisines';
+  option.value = 'All Cuisines';
+  select.append(option);
 
   cuisines.forEach(cuisine => {
     const option = document.createElement('option');
@@ -187,6 +226,8 @@ const showFavorites = (e, restaurants = self.restaurants) => {
   if (e.srcElement.checked) {
     DBHelper.fetchFavorites( (err, favorites) => {
       resetRestaurants(favorites)
+      fetchFavoriteCuisines()
+      fetchFavoriteNeighborhoods()
       addMarkersToMap(favorites)
       fillRestaurantsHTML(favorites)
       lazyLoad()
@@ -194,6 +235,8 @@ const showFavorites = (e, restaurants = self.restaurants) => {
   } else {
     DBHelper.fetchRestaurants( (err, restaruants) => {
       resetRestaurants(restaruants)
+      fetchCuisines()
+      fetchNeighborhoods()
       addMarkersToMap(restaruants)
       fillRestaurantsHTML(restaruants)
       lazyLoad()
