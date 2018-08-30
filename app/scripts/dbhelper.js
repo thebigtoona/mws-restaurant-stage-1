@@ -165,6 +165,24 @@ class DBHelper {
     });
   }
 
+  static fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
+    // Fetch all restaurants
+    DBHelper.fetchFavorites((error, restaurants) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        let results = restaurants
+        if (cuisine != 'All Cuisines') { // filter by cuisine
+          results = results.filter(r => r.cuisine_type == cuisine);
+        }
+        if (neighborhood != 'All Neighborhoods') { // filter by neighborhood
+          results = results.filter(r => r.neighborhood == neighborhood);
+        }
+        callback(null, results);
+      }
+    });
+  }
+
   /**
    * Fetch all neighborhoods with proper error handling.
    */
