@@ -47,6 +47,16 @@ class RestaurantDB {
         return tx.complete;
       })
   }
+
+  static removeFavorite(key) {
+    this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('favorites', 'readwrite')
+        const store = tx.objectStore('favorites')
+        store.delete(key)
+        return tx.complete;
+      })
+  }
 }
 
 

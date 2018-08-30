@@ -159,11 +159,35 @@ window.updateRestaurants = () => {
 
 function addRemoveFavorite(e) {
   if ( e.target.classList.contains('favorite-btn') ) {
-    if ( e.target.innerHTML == '❤' ) {
-      e.target.innerHTML = '♡'
-    } else {
-      e.target.innerHTML = '❤'
-    }
+    DBHelper.fetchRestaurantById(e.target.dataset.id, (error, restaurant) => {
+      if ( restaurant.is_favorite == "true") {
+        fetch(`${DBHelper.DATABASE_URL}/${e.target.dataset.id}/?is_favorite=false`, {method: 'put'})
+          .then(data => console.log(data))
+          .catch(err => console.log(`FETCH ERROR:  ${err}`))
+        DBHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log(restaurant)
+          }
+        })
+        restaurant.is_favorite = "false";
+        e.target.innerHTML = '♡';
+      } else {
+        fetch(`${DBHelper.DATABASE_URL}/${e.target.dataset.id}/?is_favorite=true`, {method: 'put'})
+          .then(data => console.log(data))
+          .catch(err => console.log(`FETCH ERROR:  ${err}`))
+        DBHelper.addFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
+          if (error) {
+            console.log(error)
+          } else {
+            console.log(restaurant)
+          }
+        })
+        restaurant.is_favorite = "true";
+        e.target.innerHTML = '❤';
+      }
+    })
   }
 }
 
@@ -216,11 +240,9 @@ const createRestaurantHTML = (restaurant) => {
   // favorite button
   const favorite = document.createElement('button')
   favorite.className = 'favorite-btn'
-  if (restaurant.is_favorite) {
-    favorite.innerHTML = '❤';
-  } else {
-    favorite.innerHTML = '♡';
-  }
+  favorite.setAttribute('data-id', `${restaurant.id}`);
+  // setting the btn color
+  (restaurant.is_favorite == "true") ? favorite.innerHTML = '❤' : favorite.innerHTML = '♡';
   li.append(favorite)
 
 

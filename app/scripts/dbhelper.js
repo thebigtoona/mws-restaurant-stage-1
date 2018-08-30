@@ -249,6 +249,26 @@ class DBHelper {
     });
   }
 
+  // add an indivual restaurant to the favorite db
+  static addFavoriteRestaurantDB(id, callback) {
+    fetch(`http://localhost:1337/restaurants/${id}`)
+      .then( res => res.json())
+      .then( restaurant => {
+        RestaurantDB.addFavorite(restaurant);
+        return callback(null, restaurant)
+      })
+  }
+
+  // remove an indivual restaurant to the favorite db
+  static removeFavoriteRestaurantDB(id, callback) {
+    fetch(`http://localhost:1337/restaurants/${id}`)
+      .then( res => res.json())
+      .then( restaurant => {
+        RestaurantDB.removeFavorite(restaurant.id);
+        return callback(null, restaurant)
+      })
+  }
+
   /**
    * Restaurant page URL.
    */
