@@ -164,12 +164,14 @@ function addRemoveFavorite(e) {
   if ( e.target.classList.contains('favorite-btn') ) {
     // fetch the restaurant from the restaurants db || from the network, by id
     RestaurantHelper.fetchRestaurantById(e.target.dataset.id, (error, restaurant) => {
+      typeof(restaurant)
       // if the restaurant favorite status is true
       if ( restaurant.is_favorite == "true") {
         // pull restaurant from favorite endpoint
         RestaurantHelper.pullFavoriteRestaurant(e.target.dataset.id)
         // change restaurant is_favorite status to false
-        RestaurantHelper.updateRestaurantData(e.target.dataset.id, "false");
+        restaurant.is_favorite = "false"
+        RestaurantHelper.updateRestaurantData(restaurant);
         // remove restaurant from the favorite db
         RestaurantHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
           if (error) { console.log(error) }
@@ -181,7 +183,8 @@ function addRemoveFavorite(e) {
         // push restaurant to favorite endpoint
         RestaurantHelper.pushFavoriteRestaurant(e.target.dataset.id)
         // change the is_favorite property for the restaurant db to true
-        RestaurantHelper.updateRestaurantData(e.target.dataset.id, "true");
+        restaurant.is_favorite = "true"
+        RestaurantHelper.updateRestaurantData(restaurant);
         // add restaurant to the favorite db
         RestaurantHelper.addFavoriteRestaurantDB(e.target.dataset.id, (err, res) => {
           if(err) console.log(err)

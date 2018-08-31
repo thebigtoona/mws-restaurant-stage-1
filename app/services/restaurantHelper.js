@@ -285,8 +285,8 @@ class RestaurantHelper {
       })
   }
 
-  static updateRestaurantData(id, value) {
-    RestaurantDB.updateRestaurantData(id, value)
+  static updateRestaurantData(value) {
+    RestaurantDB.updateRestaurantData(value)
   }
 
   /**
