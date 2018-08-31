@@ -34,7 +34,7 @@ $toggle-text: inherit;
     line-height: 2.3;
     // show map label
     &:first-of-type {
-      padding-right: 5em;
+      padding-right: 5.2em;
     }
 
     // hide map label
@@ -89,7 +89,7 @@ $toggle-text: inherit;
     }
 
     &:first-of-type:checked ~ label:first-of-type:before {
-      transform: translateX(-2em);
+      transform: translateX(-2.1em);
       will-change: transform;
     }
 
