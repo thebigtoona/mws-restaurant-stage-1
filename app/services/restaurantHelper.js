@@ -5,6 +5,7 @@ import RestaurantDB from '../database/RestaurantDB'
  * Common database helper functions.
  */
 class RestaurantHelper {
+  constructor() {}
 
   /**
    * Database URL.
@@ -16,12 +17,14 @@ class RestaurantHelper {
   }
 
   static get FAVORITES_URL() {
-    const url = RestaurantHelper.DATABASE_URL;
+    const url = this.DATABASE_URL;
     return `${url}/?is_favorite=true`;
   }
 
   /**
-   * Fetch all restaurants.
+   * @desc Fetch all restaurants from the database || the restaurant endpoint if there is
+   *       no data in the database already
+   * @arg { Function } callback this takes in error(str) & restaurants(arr) as arguments
    */
   static fetchRestaurants(callback) {
     RestaurantDB.getRestaurants().then(restaurants => {
@@ -51,7 +54,7 @@ class RestaurantHelper {
     RestaurantDB.getFavorites()
       .then(favorites => {
         if (!favorites || favorites.length === 0) {
-          return fetch(RestaurantHelper.FAVORITES_URL)
+          return fetch(this.FAVORITES_URL)
             .then(res => res.json())
             .then(favorites => {
               favorites.forEach(f => RestaurantDB.addFavorite(f))
