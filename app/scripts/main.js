@@ -186,9 +186,7 @@ function addRemoveFavorite(e) {
         restaurant.is_favorite = "true"
         RestaurantHelper.updateRestaurantData(restaurant);
         // add restaurant to the favorite db
-        RestaurantHelper.addFavoriteRestaurantDB(e.target.dataset.id, (err, res) => {
-          if(err) console.log(err)
-        })
+        RestaurantHelper.addFavoriteRestaurantDB(restaurant)
         // update the target button's html to the filled heart
         e.target.innerHTML = '❤';
       }
@@ -284,7 +282,7 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 
 // toggle viewing your favorites
 const showFavorites = (e, restaurants = self.restaurants) => {
-  if (e.srcElement.checked) {
+  if (e.target.checked) {
     RestaurantHelper.fetchFavorites( (err, favorites) => {
       resetRestaurants(favorites)
       fetchFavoriteCuisines()
@@ -387,11 +385,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
   registerWorker();
   fetchNeighborhoods();
   fetchCuisines();
+  RestaurantHelper.fetchFavorites((err, favorites) => (err) ? console.log(err) : console.log('its working'))
   lazyLoad();
-});
 
-// event handler for lazy loading the imgs
-registerListener('load', lazyLoad);
+  // event handler for lazy loading the imgs
+  registerListener('load', lazyLoad);
+});
 
 // toggle the favorites
 const favoriteToggle = document.querySelector('#favorite-switch')

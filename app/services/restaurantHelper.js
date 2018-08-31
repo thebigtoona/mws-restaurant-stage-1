@@ -254,7 +254,7 @@ class RestaurantHelper {
   static pushFavoriteRestaurant(id) {
     // fire off the put request to add the restaurant to the favorites endpoint
     fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=true`, {method: 'put'})
-      .then(data => console.log(data))
+      // .then(data => console.log(data))
       .catch(err => console.log(`FETCH ERROR:  ${err}`))
   }
 
@@ -262,17 +262,12 @@ class RestaurantHelper {
   static pullFavoriteRestaurant(id) {
     // fire off the put request to remove as favorite
     fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=false`, {method: 'put'})
-      .then(data => console.log(data))
+      // .then(data => console.log(data))
       .catch(err => console.log(`FETCH ERROR:  ${err}`))
   }
   // add an indivual restaurant to the favorite db
-  static addFavoriteRestaurantDB(id, callback) {
-    fetch(`http://localhost:1337/restaurants/${id}`)
-      .then( res => res.json())
-      .then( restaurant => {
-        RestaurantDB.addFavorite(restaurant);
-        return callback(null, restaurant)
-      })
+  static addFavoriteRestaurantDB(restaurant) {
+    RestaurantDB.addFavorite(restaurant);
   }
 
   // remove an indivual restaurant to the favorite db
