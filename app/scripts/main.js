@@ -146,8 +146,6 @@ window.updateRestaurants = () => {
       }
     })
   } else {
-    console.log(cuisine)
-    console.log(typeof(cuisine))
     RestaurantHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
       if (error) { // Got an error!
         console.error(error);
@@ -182,6 +180,8 @@ function addRemoveFavorite(e) {
 
         // change the inner html of the target button to the outline heart
         e.target.innerHTML = '♡';
+        e.target.setAttribute('aria-label', `set ${restaurant.name} as a favorite`)
+
       } else {
         // push restaurant to favorite endpoint
         FavoriteHelper.pushFavoriteRestaurant(e.target.dataset.id)
@@ -192,6 +192,7 @@ function addRemoveFavorite(e) {
         FavoriteHelper.addFavoriteRestaurantDB(restaurant)
         // update the target button's html to the filled heart
         e.target.innerHTML = '❤';
+        e.target.setAttribute('aria-label', `${restaurant.name} is a favorite`)
       }
     })
   }
@@ -248,7 +249,14 @@ const createRestaurantHTML = (restaurant) => {
   favorite.className = 'favorite-btn'
   favorite.setAttribute('data-id', `${restaurant.id}`);
   // setting the btn color
-  (restaurant.is_favorite == "true") ? favorite.innerHTML = '❤' : favorite.innerHTML = '♡';
+  if (restaurant.is_favorite == "true") {
+    favorite.innerHTML = '❤'
+    favorite.setAttribute('aria-label', `${restaurant.name} is a favorite`)
+  }
+  else {
+    favorite.innerHTML = '♡';
+    favorite.setAttribute('aria-label', `set ${restaurant.name} as a favorite`)
+  }
   li.append(favorite)
 
 
@@ -388,7 +396,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
   registerWorker();
   fetchNeighborhoods();
   fetchCuisines();
-  FavoriteHelper.fetchFavorites((err, favorites) => (err) ? console.log(err) : console.log('its working'))
+  FavoriteHelper.fetchFavorites((err, favorites) => {
+    if (err) {
+      console.log(err)
+    }
+  })
   lazyLoad();
 
   // event handler for lazy loading the imgs
