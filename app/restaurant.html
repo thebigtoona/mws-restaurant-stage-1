@@ -12,22 +12,6 @@
   <!-- Main CSS file -->
   <link rel="stylesheet" href="styles/styles.css" media="screen">
   <title>Restaurant Info</title>
-  <style>
-  /* display map button */
-  #map-button {
-      text-align: center;
-      background: #155C8E;
-      margin: 0;
-      padding: 4rem;
-    }
-    #toggle-map {
-      padding: .75rem 1.25rem;
-      margin: .1rem;
-      background: #fdfdfd;
-      box-shadow: none;
-      border: 1px solid lightgray;
-    }
-  </style>
 </head>
 
 <body class="inside">
@@ -35,8 +19,29 @@
   <header>
     <!-- Beginning nav -->
     <nav class="main-nav">
-      <h1><a href="/">Restaurant Reviews</a></h1>
-    </nav>
+        <div class="container">
+          <div class="nav-heading">
+            <h1><a href="/">Restaurant Reviews</a></h1>
+          </div>
+          <div class="top-toggles">
+          <!--  map toggle -->
+          <div class="map-toggle">
+            <fieldset aria-label="Map Options" class="radio-switch">
+              <legend>Map Options</legend>
+              <input type="checkbox" aria-label="Show Map" name="lol" id="show-map">
+              <label for="show-map">
+                Show Map
+              </label>
+              <!-- <input type="radio" name="lol" id="hide-map">
+              <label for="hide-map">
+                Hide Map
+              </label> -->
+            </fieldset>
+          </div>
+          </div>
+          <!-- end toggles -->
+        </div>
+      </nav>
 
     <!-- Beginning breadcrumb -->
     <nav aria-label="breadcrumb" role="navigation" class="breadcrumb">
@@ -51,11 +56,6 @@
 
   <!-- Beginning main -->
   <main role="main" class="maincontent">
-    <section id="map-button">
-        <button id="toggle-map">
-          Show Map
-        </button>
-      </section>
 
     <!-- Beginning map -->
     <section id="map-container">
@@ -95,12 +95,49 @@
   <!-- End scripts -->
 
   <script>
-      const mapBtn = document.getElementById('toggle-map');
-      const showMap = (e) => {
-        document.getElementById('map-container').style.display = "block";
-        document.getElementById('map-button').style.display = "none";
+  /**
+  Focus within pollyfill
+  Credit: https://gist.github.com/aFarkas/a7e0d85450f323d5e164
+  */
+  (function(window, document){
+  'use strict';
+  var slice = [].slice;
+  var removeClass = function(elem){
+    elem.classList.remove('focus-within');
+  };
+  var update = (function(){
+    var running, last;
+    var action = function(){
+      var element = document.activeElement;
+      running = false;
+      if(last !== element){
+        last = element;
+        slice.call(document.getElementsByClassName('focus-within')).forEach(removeClass);
+        while(element && element.classList){
+          element.classList.add('focus-within');
+          element = element.parentNode;
+        }
       }
-      mapBtn.addEventListener('click', showMap);
+    };
+    return function(){
+      if(!running){
+        requestAnimationFrame(action);
+        running = true;
+      }
+    };
+  })();
+  document.addEventListener('focus', update, true);
+  document.addEventListener('blur', update, true);
+  update();
+  })(window, document);
+
+  // toggle the map
+  const mapToggle = document.querySelector('#show-map')
+  const showMap = function (e) { // has to be a normal function (scope reasons)
+    if (this.checked) document.getElementById('map-container').style.display = 'block'
+    else document.getElementById('map-container').style.display = 'none'
+  }
+  mapToggle.addEventListener('change', showMap)
   </script>
 </body>
 </html>
