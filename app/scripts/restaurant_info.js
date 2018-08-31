@@ -1,4 +1,5 @@
 import RestaurantHelper from '../services/restaurantHelper';
+import FavoriteHelper from '../services/favoriteHelper';
 
 window['restaurant'];
 window['map'];
@@ -51,6 +52,18 @@ const fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 const fillRestaurantHTML = (restaurant = self.restaurant) => {
+  const favorite = document.getElementById('favorite')
+  favorite.setAttribute('data-id', `${restaurant.id}`);
+  // setting the btn color
+  if (restaurant.is_favorite == "true") {
+    favorite.innerHTML = '❤'
+    favorite.setAttribute('aria-label', `${restaurant.name} is a favorite`)
+  }
+  else {
+    favorite.innerHTML = '♡';
+    favorite.setAttribute('aria-label', `set ${restaurant.name} as a favorite`)
+  }
+
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
@@ -185,3 +198,45 @@ const getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+// adds/removes the restaurant from the favorite database.
+// updates the restaurant database.
+// updates the html
+function addRemoveFavorite(e) {
+  if ( e.target.classList.contains('favorite-btn') ) {
+    // fetch the restaurant from the restaurants db || from the network, by id
+    RestaurantHelper.fetchRestaurantById(e.target.dataset.id, (error, restaurant) => {
+      typeof(restaurant)
+      // if the restaurant favorite status is true
+      if ( restaurant.is_favorite == "true") {
+        // pull restaurant from favorite endpoint
+        FavoriteHelper.pullFavoriteRestaurant(e.target.dataset.id)
+        // change restaurant is_favorite status to false
+        restaurant.is_favorite = "false"
+        RestaurantHelper.updateRestaurantData(restaurant);
+        // remove restaurant from the favorite db
+        FavoriteHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
+          if (error) { console.log(error) }
+        })
+
+        // change the inner html of the target button to the outline heart
+        e.target.innerHTML = '♡';
+        e.target.setAttribute('aria-label', `set ${restaurant.name} as a favorite`)
+
+      } else {
+        // push restaurant to favorite endpoint
+        FavoriteHelper.pushFavoriteRestaurant(e.target.dataset.id)
+        // change the is_favorite property for the restaurant db to true
+        restaurant.is_favorite = "true"
+        RestaurantHelper.updateRestaurantData(restaurant);
+        // add restaurant to the favorite db
+        FavoriteHelper.addFavoriteRestaurantDB(restaurant)
+        // update the target button's html to the filled heart
+        e.target.innerHTML = '❤';
+        e.target.setAttribute('aria-label', `${restaurant.name} is a favorite`)
+      }
+    })
+  }
+} // end addRemoveFavorite()
+
+document.addEventListener('click', addRemoveFavorite)
