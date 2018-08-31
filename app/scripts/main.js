@@ -146,6 +146,8 @@ window.updateRestaurants = () => {
       }
     })
   } else {
+    console.log(cuisine)
+    console.log(typeof(cuisine))
     RestaurantHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
       if (error) { // Got an error!
         console.error(error);

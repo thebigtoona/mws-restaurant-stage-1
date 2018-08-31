@@ -148,6 +148,7 @@ gulp.task('serve', () => {
       'app/images/**/*',
       '.tmp/fonts/**/*',
       '.tmp/styles/**/*',
+      '.tmp/services/**/*',
       '.tmp/scripts/**/*'
     ]).on('change', reload);
 

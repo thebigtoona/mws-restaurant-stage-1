@@ -107,11 +107,10 @@ class RestaurantHelper {
         callback(error, null);
       } else {
         let results = restaurants
-        if (cuisine != 'all') { // filter by cuisine
+        if ((cuisine != 'all' && cuisine != 'All Cuisines')) { // filter by cuisine
           results = results.filter(r => r.cuisine_type == cuisine);
-
         }
-        if (neighborhood != 'all') { // filter by neighborhood
+        if ((neighborhood != 'all' && neighborhood != 'All Neighborhoods')) { // filter by neighborhood
           results = results.filter(r => r.neighborhood == neighborhood);
         }
         callback(null, results);
