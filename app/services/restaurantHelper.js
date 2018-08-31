@@ -158,21 +158,6 @@ class RestaurantHelper {
     });
   }
 
-  static fetchFavoriteCuisines(callback) {
-    // Fetch all restaurants
-    RestaurantHelper.fetchFavorites((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all cuisines from all restaurants
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
-        // Remove duplicates from cuisines
-        const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) == i)
-        callback(null, uniqueCuisines);
-      }
-    });
-  }
-
 
   static updateRestaurantData(value) {
     RestaurantDB.updateRestaurantData(value)
