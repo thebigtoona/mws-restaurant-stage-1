@@ -1,4 +1,4 @@
-import DBHelper from './dbhelper'
+import RestaurantHelper from '../services/restaurantHelper';
 
 window['restaurant'];
 window['map'];
@@ -17,7 +17,7 @@ window.initMap = () => {
         scrollwheel: false
       });
       fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      RestaurantHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
   });
 }
@@ -35,7 +35,7 @@ const fetchRestaurantFromURL = (callback) => {
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    RestaurantHelper.fetchRestaurantById(id, (error, restaurant) => {
       self.restaurant = restaurant;
       if (!restaurant) {
         console.error(error);
@@ -59,7 +59,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant, 'src');
+  image.src = RestaurantHelper.imageUrlForRestaurant(restaurant, 'src');
   image.alt = `${restaurant.name} Restauraunt`
 
 

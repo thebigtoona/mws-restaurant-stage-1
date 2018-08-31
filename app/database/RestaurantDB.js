@@ -57,6 +57,24 @@ class RestaurantDB {
         return tx.complete;
       })
   }
+
+  static updateRestaurantData(id, value) {
+    this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('restaurant-data', 'readwrite')
+        const store = tx.objectStore('restaurant-data')
+        store.openCursor()
+          .then( function cursorIterate(cursor) {
+            if (!cursor) return;
+            if (cursor.value.id) {
+              cursor.value.is_favorite = value;
+              cursor.update(cursor.value);
+              return cursor.continue().then(cursorIterate);
+            }
+            return cursor.continue().then(cursorIterate);
+          })
+      })
+  }
 }
 
 

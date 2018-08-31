@@ -4,7 +4,7 @@ import RestaurantDB from '../database/RestaurantDB'
 /**
  * Common database helper functions.
  */
-class DBHelper {
+class RestaurantHelper {
 
   /**
    * Database URL.
@@ -16,7 +16,7 @@ class DBHelper {
   }
 
   static get FAVORITES_URL() {
-    const url = DBHelper.DATABASE_URL;
+    const url = RestaurantHelper.DATABASE_URL;
     return `${url}/?is_favorite=true`;
   }
 
@@ -24,12 +24,10 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-
     RestaurantDB.getRestaurants().then(restaurants => {
-      // if there are no items in the db or the array returned is length 0
       if ( !restaurants || restaurants.length === 0 ) {
-        return fetch(DBHelper.DATABASE_URL)
-          .then(res => res.json()) // make response json
+        return fetch(RestaurantHelper.DATABASE_URL)
+          .then(res => res.json())
           .then(restaurants => {
             restaurants.forEach( restaurant => {
               if (restaurant.photograph) { restaurant.photograph = `${restaurant.photograph}` }
@@ -53,7 +51,7 @@ class DBHelper {
     RestaurantDB.getFavorites()
       .then(favorites => {
         if (!favorites || favorites.length === 0) {
-          return fetch(DBHelper.FAVORITES_URL)
+          return fetch(RestaurantHelper.FAVORITES_URL)
             .then(res => res.json())
             .then(favorites => {
               favorites.forEach(f => RestaurantDB.addFavorite(f))
@@ -71,7 +69,7 @@ class DBHelper {
    */
   static fetchRestaurantById(id, callback) {
     // fetch all restaurants with proper error handling.
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -90,7 +88,7 @@ class DBHelper {
    */
   static fetchRestaurantByCuisine(cuisine, callback) {
     // Fetch all restaurants  with proper error handling
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -103,7 +101,7 @@ class DBHelper {
 
   static fetchFavoriteByCuisine(cuisine, callback) {
     // Fetch all restaurants  with proper error handling
-    DBHelper.fetchFavorites( (error, restaurants) => {
+    RestaurantHelper.fetchFavorites( (error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -119,7 +117,7 @@ class DBHelper {
    */
   static fetchRestaurantByNeighborhood(neighborhood, callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -132,7 +130,7 @@ class DBHelper {
 
   static fetchFavoriteByNeighborhood(neighborhood, callback) {
     // Fetch all restaurants
-    DBHelper.fetchFavorites((error, restaurants) => {
+    RestaurantHelper.fetchFavorites((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -148,7 +146,7 @@ class DBHelper {
    */
   static fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -167,7 +165,7 @@ class DBHelper {
 
   static fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
     // Fetch all restaurants
-    DBHelper.fetchFavorites((error, restaurants) => {
+    RestaurantHelper.fetchFavorites((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -188,7 +186,7 @@ class DBHelper {
    */
   static fetchNeighborhoods(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -203,7 +201,7 @@ class DBHelper {
 
   static fetchFavoriteNeighborhoods(callback) {
     // Fetch all restaurants
-    DBHelper.fetchFavorites((error, restaurants) => {
+    RestaurantHelper.fetchFavorites((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -221,7 +219,7 @@ class DBHelper {
    */
   static fetchCuisines(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    RestaurantHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -236,7 +234,7 @@ class DBHelper {
 
   static fetchFavoriteCuisines(callback) {
     // Fetch all restaurants
-    DBHelper.fetchFavorites((error, restaurants) => {
+    RestaurantHelper.fetchFavorites((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -249,6 +247,21 @@ class DBHelper {
     });
   }
 
+  // put a restaurant into the favorites endpoint
+  static pushFavoriteRestaurant(id) {
+    // fire off the put request to add the restaurant to the favorites endpoint
+    fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=true`, {method: 'put'})
+      .then(data => console.log(data))
+      .catch(err => console.log(`FETCH ERROR:  ${err}`))
+  }
+
+  // remove a restaurant from the favorites endpoint
+  static pullFavoriteRestaurant(id) {
+    // fire off the put request to remove as favorite
+    fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=false`, {method: 'put'})
+      .then(data => console.log(data))
+      .catch(err => console.log(`FETCH ERROR:  ${err}`))
+  }
   // add an indivual restaurant to the favorite db
   static addFavoriteRestaurantDB(id, callback) {
     fetch(`http://localhost:1337/restaurants/${id}`)
@@ -267,6 +280,10 @@ class DBHelper {
         RestaurantDB.removeFavorite(restaurant.id);
         return callback(null, restaurant)
       })
+  }
+
+  static updateRestaurantData(id, value) {
+    RestaurantDB.updateRestaurantData(id, value)
   }
 
   /**
@@ -294,7 +311,7 @@ class DBHelper {
     const marker = new google.maps.Marker({
       position: restaurant.latlng,
       title: restaurant.name,
-      url: DBHelper.urlForRestaurant(restaurant),
+      url: RestaurantHelper.urlForRestaurant(restaurant),
       map: map,
       animation: google.maps.Animation.DROP}
     );
@@ -304,4 +321,4 @@ class DBHelper {
 }
 
 
-export { DBHelper as default }
+export { RestaurantHelper as default }

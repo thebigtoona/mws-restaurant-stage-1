@@ -74,7 +74,7 @@ gulp.task('scripts', () => {
 gulp.task('browserTransform', () => {
   browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
   browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
-  browserTransform(['./app/scripts/dbhelper.js'], 'dbhelper.js', '.tmp/scripts')
+  browserTransform(['./app/services/restaurantHelper.js'], 'restaurantHelper.js', '.tmp/services')
   browserTransform(['./app/scripts/main.js'], 'main.js', '.tmp/scripts')
   browserTransform(['./app/scripts/restaurant_info.js'], 'restaurant_info.js', '.tmp/scripts')
 })
@@ -145,7 +145,9 @@ gulp.task('serve', () => {
     gulp.watch([
       'app/*.html',
       'app/images/**/*',
-      '.tmp/fonts/**/*'
+      '.tmp/fonts/**/*',
+      '.tmp/styles/**/*',
+      '.tmp/scripts/**/*'
     ]).on('change', reload);
 
     gulp.watch('app/styles/**/*.scss', ['styles']);

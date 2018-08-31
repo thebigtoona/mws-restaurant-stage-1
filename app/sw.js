@@ -8,7 +8,8 @@ const cachedAssets = [
   '/',
   'restaurant.html',
   'styles/styles.css',
-  'scripts/dbhelper.js',
+  'services/restaurantHelper.js',
+  'services/favoriteHelper.js',
   'scripts/main.js',
   'scripts/restaurant_info.js'
 ]

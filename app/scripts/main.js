@@ -1,5 +1,5 @@
-// this is the import statement for the dbhelper class
-import DBHelper from './dbhelper';
+// this is the import statement for the RestaurantHelper class
+import RestaurantHelper from '../services/restaurantHelper';
 
 let restaurants,
     neighborhoods,
@@ -14,7 +14,7 @@ window['markers'] = [];
  * Fetch all neighborhoods and set their HTML.
  */
 const fetchNeighborhoods = () => {
-  DBHelper.fetchNeighborhoods((error, neighborhoods) => {
+  RestaurantHelper.fetchNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
       console.error(error);
     } else {
@@ -25,7 +25,7 @@ const fetchNeighborhoods = () => {
 }
 
 const fetchFavoriteNeighborhoods = () => {
-  DBHelper.fetchFavoriteNeighborhoods((error, neighborhoods) => {
+  RestaurantHelper.fetchFavoriteNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
       console.error(error);
     } else {
@@ -61,7 +61,7 @@ const fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
  * Fetch all cuisines and set their HTML.
  */
 const fetchCuisines = () => {
-  DBHelper.fetchCuisines((error, cuisines) => {
+  RestaurantHelper.fetchCuisines((error, cuisines) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
@@ -72,7 +72,7 @@ const fetchCuisines = () => {
 }
 
 const fetchFavoriteCuisines = () => {
-  DBHelper.fetchFavoriteCuisines((error, cuisines) => {
+  RestaurantHelper.fetchFavoriteCuisines((error, cuisines) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
@@ -135,7 +135,7 @@ window.updateRestaurants = () => {
   const neighborhood = nSelect[nIndex].value;
 
   if (favoriteToggle.checked) {
-    DBHelper.fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    RestaurantHelper.fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
       if (error) { // Got an error!
         console.error(error);
       } else {
@@ -145,7 +145,7 @@ window.updateRestaurants = () => {
       }
     })
   } else {
-    DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    RestaurantHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
       if (error) { // Got an error!
         console.error(error);
       } else {
@@ -157,39 +157,41 @@ window.updateRestaurants = () => {
   }
 }
 
+// adds/removes the restaurant from the favorite database.
+// updates the restaurant database.
+// updates the html
 function addRemoveFavorite(e) {
   if ( e.target.classList.contains('favorite-btn') ) {
-    DBHelper.fetchRestaurantById(e.target.dataset.id, (error, restaurant) => {
+    // fetch the restaurant from the restaurants db || from the network, by id
+    RestaurantHelper.fetchRestaurantById(e.target.dataset.id, (error, restaurant) => {
+      // if the restaurant favorite status is true
       if ( restaurant.is_favorite == "true") {
-        fetch(`${DBHelper.DATABASE_URL}/${e.target.dataset.id}/?is_favorite=false`, {method: 'put'})
-          .then(data => console.log(data))
-          .catch(err => console.log(`FETCH ERROR:  ${err}`))
-        DBHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
-          if (error) {
-            console.log(error)
-          } else {
-            console.log(restaurant)
-          }
+        // pull restaurant from favorite endpoint
+        RestaurantHelper.pullFavoriteRestaurant(e.target.dataset.id)
+        // change restaurant is_favorite status to false
+        RestaurantHelper.updateRestaurantData(e.target.dataset.id, "false");
+        // remove restaurant from the favorite db
+        RestaurantHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
+          if (error) { console.log(error) }
         })
-        restaurant.is_favorite = "false";
+
+        // change the inner html of the target button to the outline heart
         e.target.innerHTML = '♡';
       } else {
-        fetch(`${DBHelper.DATABASE_URL}/${e.target.dataset.id}/?is_favorite=true`, {method: 'put'})
-          .then(data => console.log(data))
-          .catch(err => console.log(`FETCH ERROR:  ${err}`))
-        DBHelper.addFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
-          if (error) {
-            console.log(error)
-          } else {
-            console.log(restaurant)
-          }
+        // push restaurant to favorite endpoint
+        RestaurantHelper.pushFavoriteRestaurant(e.target.dataset.id)
+        // change the is_favorite property for the restaurant db to true
+        RestaurantHelper.updateRestaurantData(e.target.dataset.id, "true");
+        // add restaurant to the favorite db
+        RestaurantHelper.addFavoriteRestaurantDB(e.target.dataset.id, (err, res) => {
+          if(err) console.log(err)
         })
-        restaurant.is_favorite = "true";
+        // update the target button's html to the filled heart
         e.target.innerHTML = '❤';
       }
     })
   }
-}
+} // end addRemoveFavorite()
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
@@ -228,8 +230,8 @@ const createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.setAttribute('data-src', `${DBHelper.imageUrlForRestaurant(restaurant, 'src')}`)
-  image.src = DBHelper.imageUrlForRestaurant(restaurant, 'datasrc');
+  image.setAttribute('data-src', `${RestaurantHelper.imageUrlForRestaurant(restaurant, 'src')}`)
+  image.src = RestaurantHelper.imageUrlForRestaurant(restaurant, 'datasrc');
   image.alt = `${restaurant.name} Restaurant`
   li.append(image);
 
@@ -257,7 +259,7 @@ const createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.setAttribute('aria-label', 'view details');
-  more.href = DBHelper.urlForRestaurant(restaurant);
+  more.href = RestaurantHelper.urlForRestaurant(restaurant);
   li.append(more)
 
   return li
@@ -269,7 +271,7 @@ const createRestaurantHTML = (restaurant) => {
 const addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
-    const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
+    const marker = RestaurantHelper.mapMarkerForRestaurant(restaurant, self.map);
     google.maps.event.addListener(marker, 'click', () => {
       window.location.href = marker.url
     });
@@ -280,7 +282,7 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 // toggle viewing your favorites
 const showFavorites = (e, restaurants = self.restaurants) => {
   if (e.srcElement.checked) {
-    DBHelper.fetchFavorites( (err, favorites) => {
+    RestaurantHelper.fetchFavorites( (err, favorites) => {
       resetRestaurants(favorites)
       fetchFavoriteCuisines()
       fetchFavoriteNeighborhoods()
@@ -289,7 +291,7 @@ const showFavorites = (e, restaurants = self.restaurants) => {
       lazyLoad()
     })
   } else {
-    DBHelper.fetchRestaurants( (err, restaruants) => {
+    RestaurantHelper.fetchRestaurants( (err, restaruants) => {
       resetRestaurants(restaruants)
       fetchCuisines()
       fetchNeighborhoods()
