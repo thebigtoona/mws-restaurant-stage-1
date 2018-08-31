@@ -16,11 +16,6 @@ class RestaurantHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
-  static get FAVORITES_URL() {
-    const url = this.DATABASE_URL;
-    return `${url}/?is_favorite=true`;
-  }
-
   /**
    * @desc Fetch all restaurants from the database || the restaurant endpoint if there is
    *       no data in the database already
@@ -48,23 +43,6 @@ class RestaurantHelper {
           return callback(null, restaurants) // return the array from the db
       }
     })
-  }
-
-  static fetchFavorites(callback) {
-    RestaurantDB.getFavorites()
-      .then(favorites => {
-        if (!favorites || favorites.length === 0) {
-          return fetch(this.FAVORITES_URL)
-            .then(res => res.json())
-            .then(favorites => {
-              favorites.forEach(f => RestaurantDB.addFavorite(f))
-              return callback(null, favorites)
-            })
-            .catch(err => callback(err, null))
-        } else {
-          return callback(null, favorites)
-        }
-      })
   }
 
   /**
@@ -102,19 +80,6 @@ class RestaurantHelper {
     });
   }
 
-  static fetchFavoriteByCuisine(cuisine, callback) {
-    // Fetch all restaurants  with proper error handling
-    RestaurantHelper.fetchFavorites( (error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given cuisine type
-        const results = restaurants.filter(r => r.cuisine_type == cuisine);
-        callback(null, results);
-      }
-    });
-  }
-
   /**
    * Fetch restaurants by a neighborhood with proper error handling.
    */
@@ -131,18 +96,6 @@ class RestaurantHelper {
     });
   }
 
-  static fetchFavoriteByNeighborhood(neighborhood, callback) {
-    // Fetch all restaurants
-    RestaurantHelper.fetchFavorites((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Filter restaurants to have only given neighborhood
-        const results = restaurants.filter(r => r.neighborhood == neighborhood);
-        callback(null, results);
-      }
-    });
-  }
 
   /**
    * Fetch restaurants by a cuisine and a neighborhood with proper error handling.
@@ -166,23 +119,6 @@ class RestaurantHelper {
     });
   }
 
-  static fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, callback) {
-    // Fetch all restaurants
-    RestaurantHelper.fetchFavorites((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        let results = restaurants
-        if (cuisine != 'All Cuisines') { // filter by cuisine
-          results = results.filter(r => r.cuisine_type == cuisine);
-        }
-        if (neighborhood != 'All Neighborhoods') { // filter by neighborhood
-          results = results.filter(r => r.neighborhood == neighborhood);
-        }
-        callback(null, results);
-      }
-    });
-  }
 
   /**
    * Fetch all neighborhoods with proper error handling.
@@ -202,20 +138,7 @@ class RestaurantHelper {
     });
   }
 
-  static fetchFavoriteNeighborhoods(callback) {
-    // Fetch all restaurants
-    RestaurantHelper.fetchFavorites((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        // Get all neighborhoods from all restaurants
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
-        // Remove duplicates from neighborhoods
-        const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) == i)
-        callback(null, uniqueNeighborhoods);
-      }
-    });
-  }
+
 
   /**
    * Fetch all cuisines with proper error handling.
@@ -250,35 +173,6 @@ class RestaurantHelper {
     });
   }
 
-  // put a restaurant into the favorites endpoint
-  static pushFavoriteRestaurant(id) {
-    // fire off the put request to add the restaurant to the favorites endpoint
-    fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=true`, {method: 'put'})
-      // .then(data => console.log(data))
-      .catch(err => console.log(`FETCH ERROR:  ${err}`))
-  }
-
-  // remove a restaurant from the favorites endpoint
-  static pullFavoriteRestaurant(id) {
-    // fire off the put request to remove as favorite
-    fetch(`${RestaurantHelper.DATABASE_URL}/${id}/?is_favorite=false`, {method: 'put'})
-      // .then(data => console.log(data))
-      .catch(err => console.log(`FETCH ERROR:  ${err}`))
-  }
-  // add an indivual restaurant to the favorite db
-  static addFavoriteRestaurantDB(restaurant) {
-    RestaurantDB.addFavorite(restaurant);
-  }
-
-  // remove an indivual restaurant to the favorite db
-  static removeFavoriteRestaurantDB(id, callback) {
-    fetch(`http://localhost:1337/restaurants/${id}`)
-      .then( res => res.json())
-      .then( restaurant => {
-        RestaurantDB.removeFavorite(restaurant.id);
-        return callback(null, restaurant)
-      })
-  }
 
   static updateRestaurantData(value) {
     RestaurantDB.updateRestaurantData(value)

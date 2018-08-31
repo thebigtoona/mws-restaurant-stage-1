@@ -1,5 +1,6 @@
 // this is the import statement for the RestaurantHelper class
 import RestaurantHelper from '../services/restaurantHelper';
+import FavoriteHelper from '../services/favoriteHelper';
 
 let restaurants,
     neighborhoods,
@@ -25,7 +26,7 @@ const fetchNeighborhoods = () => {
 }
 
 const fetchFavoriteNeighborhoods = () => {
-  RestaurantHelper.fetchFavoriteNeighborhoods((error, neighborhoods) => {
+  FavoriteHelper.fetchFavoriteNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
       console.error(error);
     } else {
@@ -72,7 +73,7 @@ const fetchCuisines = () => {
 }
 
 const fetchFavoriteCuisines = () => {
-  RestaurantHelper.fetchFavoriteCuisines((error, cuisines) => {
+  FavoriteHelper.fetchFavoriteCuisines((error, cuisines) => {
     if (error) { // Got an error!
       console.error(error);
     } else {
@@ -135,7 +136,7 @@ window.updateRestaurants = () => {
   const neighborhood = nSelect[nIndex].value;
 
   if (favoriteToggle.checked) {
-    RestaurantHelper.fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+    FavoriteHelper.fetchFavoriteRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
       if (error) { // Got an error!
         console.error(error);
       } else {
@@ -168,12 +169,12 @@ function addRemoveFavorite(e) {
       // if the restaurant favorite status is true
       if ( restaurant.is_favorite == "true") {
         // pull restaurant from favorite endpoint
-        RestaurantHelper.pullFavoriteRestaurant(e.target.dataset.id)
+        FavoriteHelper.pullFavoriteRestaurant(e.target.dataset.id)
         // change restaurant is_favorite status to false
         restaurant.is_favorite = "false"
         RestaurantHelper.updateRestaurantData(restaurant);
         // remove restaurant from the favorite db
-        RestaurantHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
+        FavoriteHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
           if (error) { console.log(error) }
         })
 
@@ -181,12 +182,12 @@ function addRemoveFavorite(e) {
         e.target.innerHTML = '♡';
       } else {
         // push restaurant to favorite endpoint
-        RestaurantHelper.pushFavoriteRestaurant(e.target.dataset.id)
+        FavoriteHelper.pushFavoriteRestaurant(e.target.dataset.id)
         // change the is_favorite property for the restaurant db to true
         restaurant.is_favorite = "true"
         RestaurantHelper.updateRestaurantData(restaurant);
         // add restaurant to the favorite db
-        RestaurantHelper.addFavoriteRestaurantDB(restaurant)
+        FavoriteHelper.addFavoriteRestaurantDB(restaurant)
         // update the target button's html to the filled heart
         e.target.innerHTML = '❤';
       }
@@ -283,7 +284,7 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
 // toggle viewing your favorites
 const showFavorites = (e, restaurants = self.restaurants) => {
   if (e.target.checked) {
-    RestaurantHelper.fetchFavorites( (err, favorites) => {
+    FavoriteHelper.fetchFavorites( (err, favorites) => {
       resetRestaurants(favorites)
       fetchFavoriteCuisines()
       fetchFavoriteNeighborhoods()
@@ -385,7 +386,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   registerWorker();
   fetchNeighborhoods();
   fetchCuisines();
-  RestaurantHelper.fetchFavorites((err, favorites) => (err) ? console.log(err) : console.log('its working'))
+  FavoriteHelper.fetchFavorites((err, favorites) => (err) ? console.log(err) : console.log('its working'))
   lazyLoad();
 
   // event handler for lazy loading the imgs
