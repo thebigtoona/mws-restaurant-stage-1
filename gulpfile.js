@@ -71,6 +71,17 @@ gulp.task('scripts', () => {
     .pipe(reload({stream: true}));
 });
 
+gulp.task('services', () => {
+  return gulp.src('app/services/**/*.js')
+    .pipe($.plumber())
+    .pipe($.if(dev, $.sourcemaps.init()))
+    .pipe($.babel())
+    .pipe($.if(dev, $.sourcemaps.write('.')))
+    // .pipe(uglify())
+    .pipe(gulp.dest('.tmp/services'))
+    .pipe(reload({stream: true}));
+});
+
 gulp.task('browserTransform', () => {
   browserTransform(['./app/sw.js'], 'sw.js', '.tmp')
   browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
@@ -84,12 +95,13 @@ gulp.task('lint', () => {
   return lint('app/scripts/**/*.js')
     .pipe(gulp.dest('app/scripts'));
 });
+
 gulp.task('lint:test', () => {
   return lint('test/spec/**/*.js')
     .pipe(gulp.dest('test/spec'));
 });
 
-gulp.task('html', ['styles', 'scripts'], () => {
+gulp.task('html', ['styles', 'scripts', 'services'], () => {
   return gulp.src('app/*.html')
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
@@ -131,7 +143,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts', 'browserTransform'], () => {
+  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'services', 'fonts', 'browserTransform'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -154,6 +166,7 @@ gulp.task('serve', () => {
 
     gulp.watch('app/styles/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts', 'browserTransform']);
+    gulp.watch('app/services/**/*.js', ['services', 'browserTransform']);
     gulp.watch('app/fonts/**/*', ['fonts']);
     gulp.watch('app/sw.js', ['browserTransform']);
     gulp.watch('app/database/RestaurantDB.js', ['browserTransform']);
@@ -171,7 +184,7 @@ gulp.task('serve:dist', ['default'], () => {
   });
 });
 
-gulp.task('serve:test', ['scripts'], () => {
+gulp.task('serve:test', ['scripts', 'services'], () => {
   browserSync.init({
     notify: false,
     port: 9000,
@@ -180,12 +193,14 @@ gulp.task('serve:test', ['scripts'], () => {
       baseDir: 'test',
       routes: {
         '/scripts': '.tmp/scripts',
+        '/services': '.tmp/services',
         '/bower_components': 'bower_components'
       }
     }
   });
 
   gulp.watch('app/scripts/**/*.js', ['scripts']);
+  gulp.watch('app/services/**/*.js', ['services']);
   gulp.watch(['test/spec/**/*.js', 'test/index.html']).on('change', reload);
   gulp.watch('test/spec/**/*.js', ['lint:test']);
 });
