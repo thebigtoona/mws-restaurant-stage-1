@@ -13,6 +13,8 @@ const babelify = require('babelify');
 const streamify = require('streamify');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
+const compression  = require('compression');
+
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -149,10 +151,14 @@ gulp.task('serve', () => {
       port: 9000,
       server: {
         baseDir: ['.tmp', 'app'],
+        middleware: [compression()],
         routes: {
           '/bower_components': 'bower_components'
-        }
-      }
+        },
+
+      },
+      // httpModule: 'http2',
+      // https: true
     });
 
     gulp.watch([
