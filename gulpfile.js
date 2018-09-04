@@ -7,7 +7,7 @@ const wiredep = require('wiredep').stream;
 const runSequence = require('run-sequence');
 
 // plugins I added
-const uglify = require('gulp-uglify')
+const uglify = require('gulp-uglifyjs')
 const cssnano = require('gulp-cssnano')
 const babelify = require('babelify');
 const streamify = require('streamify');
