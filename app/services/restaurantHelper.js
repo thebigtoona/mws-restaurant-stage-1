@@ -7,8 +7,8 @@ import RestaurantDB from '../database/RestaurantDB'
 class RestaurantHelper {
   constructor() {}
 
-  static get URL(port = 1337) {
-    return `http://localhost:${port}`;
+  static get URL() {
+    return `http://localhost:1337`;
   }
   /**
    * Database URL.
