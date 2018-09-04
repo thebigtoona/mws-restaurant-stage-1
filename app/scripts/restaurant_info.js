@@ -107,10 +107,15 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
   }
 }
 
+// get the reviews for the restaurant here. try the db first
+const getReviews = ( restaurant = self.restaurant ) => {
+  // return the reviews here
+}
+
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = (reviews = getReviews()) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';

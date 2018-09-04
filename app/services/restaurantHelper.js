@@ -7,13 +7,15 @@ import RestaurantDB from '../database/RestaurantDB'
 class RestaurantHelper {
   constructor() {}
 
+  static get URL(port = 1337) {
+    return `http://localhost:${port}`;
+  }
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `${this.URL}/restaurants`;
   }
 
   /**
