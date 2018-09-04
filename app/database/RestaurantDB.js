@@ -3,12 +3,15 @@ import idb from 'idb';
 class RestaurantDB {
 
   static openDatabase() {
-    return idb.open('mws-restaurant-reviews', 1, upgradeDB => {
+    return idb.open('mws-restaurant-reviews', 2, upgradeDB => {
       switch (upgradeDB.oldVersion) {
         case 0:
           upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'});
         case 1:
           upgradeDB.createObjectStore('favorites', {keyPath: 'id'});
+        case 2:
+          upgradeDB.createObjectStore('reviews', {keyPath: 'id'})
+            .createIndex('byRestaurant', 'restaurant_id')
       }
     });
   }
