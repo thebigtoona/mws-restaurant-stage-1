@@ -11,13 +11,43 @@ class ReviewHelper extends RestaurantHelper {
   }
 
   // reviews by id enpoint
-  static get REVIEWS_BY_RESTAURANT(restaurantId) {
+  static REVIEWS_BY_RESTAURANT(restaurantId) {
     return `${this.REVIEWS_URL}/?restaurant_id=${restaurantId}`;
   }
 
   // reviews by review id
-  static get REVIEWS_BY_ID(reviewId) {
+  static REVIEWS_BY_ID(reviewId) {
     return `${this.REVIEWS_URL}/${reviewId}`;
   }
 
+  static fetchReviewsByRestaurantId(restaurantId, callback) {
+    RestaurantDB.getReviewsByRestaurant(restaurantId)
+      .then(reviews => {
+        if (!reviews || reviews <= 0) {
+          fetch(`${this.REVIEWS_BY_RESTAURANT(restaurantId)}`)
+            .then(res => res.json())
+            .then( reviews => {
+              console.log(typeof(reviews))
+              console.log(reviews)
+              reviews.forEach(r => {
+                RestaurantDB.addReview(r)
+              })
+              return callback(null, reviews)
+            })
+            .catch(err => {
+              console.log(`FETCH ERROR: ${err}`)
+              return callback(err, null)
+            })
+        } else {
+          return callback(null, reviews)
+        }
+      })
+      .catch(err => {
+        console.log(`DB ERROR: ${err}`)
+        return callback(err, null)
+      })
+  }
+
 }
+
+export { ReviewHelper as default }

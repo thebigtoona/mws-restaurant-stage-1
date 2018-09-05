@@ -1,7 +1,9 @@
 import RestaurantHelper from '../services/restaurantHelper';
 import FavoriteHelper from '../services/favoriteHelper';
+import ReviewHelper from '../services/reviewHelper';
 
 window['restaurant'];
+window['reviews'];
 window['map'];
 
 /**
@@ -83,8 +85,18 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
+
+  // fill review html. fetch/add reviews to db. pull reviews from db
+  ReviewHelper.fetchReviewsByRestaurantId(restaurant.id, (error, reviews) => {
+    if (error) {
+      console.log(`ERROR: ${error}`)
+      fillReviewsHTML()
+      return
+    } else {
+      console.log(reviews)
+      fillReviewsHTML(reviews)
+    }
+  })
 }
 
 /**
@@ -107,15 +119,12 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
   }
 }
 
-// get the reviews for the restaurant here. try the db first
-const getReviews = ( restaurant = self.restaurant ) => {
-  // return the reviews here
-}
 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = getReviews()) => {
+const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
+  console.log(reviews)
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';

@@ -89,6 +89,7 @@ gulp.task('browserTransform', () => {
   browserTransform(['./app/database/RestaurantDB.js'], 'RestaurantDB.js', '.tmp/database')
   browserTransform(['./app/services/restaurantHelper.js'], 'restaurantHelper.js', '.tmp/services')
   browserTransform(['./app/services/favoriteHelper.js'], 'favoriteHelper.js', '.tmp/services')
+  browserTransform(['./app/services/reviewHelper.js'], 'reviewHelper.js', '.tmp/services')
   browserTransform(['./app/scripts/main.js'], 'main.js', '.tmp/scripts')
   browserTransform(['./app/scripts/restaurant_info.js'], 'restaurant_info.js', '.tmp/scripts')
 })
@@ -155,10 +156,7 @@ gulp.task('serve', () => {
         routes: {
           '/bower_components': 'bower_components'
         },
-
       },
-      // httpModule: 'http2',
-      // https: true
     });
 
     gulp.watch([

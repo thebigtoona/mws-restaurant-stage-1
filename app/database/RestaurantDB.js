@@ -70,6 +70,26 @@ class RestaurantDB {
         return tx.complete;
       })
   }
+
+  static getReviewsByRestaurant(key) {
+    return this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('reviews', 'readwrite')
+        const store = tx.objectStore('reviews')
+        const byRestaurant = store.index('byRestaurant')
+        return byRestaurant.getAll(key)
+      })
+  }
+
+  static addReview(review) {
+    this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('reviews', 'readwrite')
+        const store = tx.objectStore('reviews')
+        store.put(review)
+        return tx.complete
+      })
+  }
 }
 
 

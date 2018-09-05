@@ -82,7 +82,15 @@ section {
   max-width: 1200px;
 }
 
-
+.favorite-btn {
+  color: red;
+  background: none;
+  height: 40px;
+  width: 48px;
+  border: none;
+  font-size: 2em;
+  margin-bottom: .4em;
+}
 
 /*  Media Queries */
 @mixin mediaSm {
