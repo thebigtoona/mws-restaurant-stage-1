@@ -46,6 +46,10 @@ class ReviewHelper extends RestaurantHelper {
       })
   }
 
+  static addReview(review) {
+    RestaurantDB.addReview(review)
+  }
+
 }
 
 export { ReviewHelper as default }
