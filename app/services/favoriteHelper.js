@@ -16,7 +16,6 @@ class FavoriteHelper extends RestaurantHelper {
     fetch(this.FAVORITES_URL)
       .then(res => res.json())
       .then(favorites => {
-        favorites.forEach(f => RestaurantDB.addFavorite(f))
         return callback(null, favorites)
       })
       .catch(err => {
@@ -119,20 +118,8 @@ class FavoriteHelper extends RestaurantHelper {
       // .then(data => console.log(data))
       .catch(err => console.log(`FETCH ERROR:  ${err}`))
   }
-  // add an indivual restaurant to the favorite db
-  static addFavoriteRestaurantDB(restaurant) {
-    RestaurantDB.addFavorite(restaurant);
-  }
 
-  // remove an indivual restaurant to the favorite db
-  static removeFavoriteRestaurantDB(id, callback) {
-    fetch(`http://localhost:1337/restaurants/${id}`)
-      .then( res => res.json())
-      .then( restaurant => {
-        RestaurantDB.removeFavorite(restaurant.id);
-        return callback(null, restaurant)
-      })
-  }
+
 }
 
 export { FavoriteHelper as default }

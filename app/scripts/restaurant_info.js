@@ -249,11 +249,6 @@ function addRemoveFavorite(e) {
         // change restaurant is_favorite status to false
         restaurant.is_favorite = "false"
         RestaurantHelper.updateRestaurantData(restaurant);
-        // remove restaurant from the favorite db
-        FavoriteHelper.removeFavoriteRestaurantDB(e.target.dataset.id, (error, restaurant) => {
-          if (error) { console.log(error) }
-        })
-
         // change the inner html of the target button to the outline heart
         e.target.innerHTML = '♡';
         e.target.setAttribute('aria-label', `set ${restaurant.name} as a favorite`)
@@ -264,8 +259,6 @@ function addRemoveFavorite(e) {
         // change the is_favorite property for the restaurant db to true
         restaurant.is_favorite = "true"
         RestaurantHelper.updateRestaurantData(restaurant);
-        // add restaurant to the favorite db
-        FavoriteHelper.addFavoriteRestaurantDB(restaurant)
         // update the target button's html to the filled heart
         e.target.innerHTML = '❤';
         e.target.setAttribute('aria-label', `${restaurant.name} is a favorite`)
