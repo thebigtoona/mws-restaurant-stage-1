@@ -13,19 +13,20 @@ class FavoriteHelper extends RestaurantHelper {
   }
 
   static fetchFavorites(callback) {
-    RestaurantDB.getFavorites()
+    fetch(this.FAVORITES_URL)
+      .then(res => res.json())
       .then(favorites => {
-        if (!favorites || favorites.length === 0) {
-          return fetch(this.FAVORITES_URL)
-            .then(res => res.json())
-            .then(favorites => {
-              favorites.forEach(f => RestaurantDB.addFavorite(f))
-              return callback(null, favorites)
-            })
-            .catch(err => callback(err, null))
-        } else {
-          return callback(null, favorites)
-        }
+        favorites.forEach(f => RestaurantDB.addFavorite(f))
+        return callback(null, favorites)
+      })
+      .catch(err => {
+        RestaurantDB.getFavorites()
+          .then(favorites => {
+            return callback(null, favorites)
+          })
+          if (!favorites || favorites.length === 0) {
+            return callback(err, null)
+          }
       })
   }
 
