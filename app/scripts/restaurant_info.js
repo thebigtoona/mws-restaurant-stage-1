@@ -147,35 +147,40 @@ const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = (review) => {
+  // review body
   const li = document.createElement('li');
   const header = document.createElement('header');
   const article = document.createElement('article');
 
+  // review body inner components
+  const name = document.createElement('p');
+  const date = document.createElement('p');
+  const rating = document.createElement('p');
+  const comments = document.createElement('p');
+
+  // date parsed for display
+  const reviewDate = new Date(review.updatedAt).toUTCString().substr(4, 12);
+
   li.setAttribute('role','listitem')
   li.setAttribute('tabindex','0')
-
   li.appendChild(header);
   li.appendChild(article);
 
-  const name = document.createElement('p');
   name.classList.add('review-name');
   name.innerHTML = review.name;
-  name.setAttribute('aria-label', `reviewed by ${review.name} on ${review.date}`)
+  name.setAttribute('aria-label', `reviewed by ${review.name} on ${reviewDate}`)
   header.appendChild(name);
 
-  const date = document.createElement('p');
   date.classList.add('review-date');
-  date.innerHTML = review.date;
+  date.innerHTML = `${reviewDate}`
   header.appendChild(date);
 
-  const rating = document.createElement('p');
   rating.classList.add('review-rating');
   rating.innerHTML = `Rating: ${review.rating}`;
   rating.setAttribute('aria-label', `Rating: ${review.rating}`);
   rating.setAttribute('tabindex', '0');
   article.appendChild(rating);
 
-  const comments = document.createElement('p');
   comments.classList.add('review-comments');
   comments.setAttribute('tabindex', '0');
   comments.innerHTML = review.comments;
