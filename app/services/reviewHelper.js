@@ -21,29 +21,37 @@ class ReviewHelper extends RestaurantHelper {
   }
 
   static fetchReviewsByRestaurantId(restaurantId, callback) {
-    RestaurantDB.getReviewsByRestaurant(restaurantId)
-      .then(reviews => {
-        if (!reviews || reviews <= 0) {
-          fetch(`${this.REVIEWS_BY_RESTAURANT(restaurantId)}`)
-            .then(res => res.json())
-            .then( reviews => {
-              reviews.forEach(r => {
-                RestaurantDB.addReview(r)
-              })
-              return callback(null, reviews)
-            })
-            .catch(err => {
-              console.log(`FETCH ERROR: ${err}`)
-              return callback(err, null)
-            })
-        } else {
-          return callback(null, reviews)
-        }
+    // try a fetch for the review data
+    fetch(this.REVIEWS_BY_RESTAURANT(restaurantId))
+      .then( res => res.json())
+      .then( reviews => {
+        reviews.forEach(r => {
+        // add the reviews to the cache
+        RestaurantDB.addReview(r)
+        })
+        // return the results of the fetch
+        return callback(null, reviews)
       })
       .catch(err => {
-        console.log(`DB ERROR: ${err}`)
-        return callback(err, null)
-      })
+        // try the idb cache
+        RestaurantDB.getReviewsByRestaurant(restaurantId)
+          .then(reviews => {
+            // return the reviews from idb
+            return callback(null, reviews)
+            // if there are no reviews in the cache
+            if (!reviews || reviews <= 0) {
+              return callback(`No Reviews in IDB`, null)
+            }
+          })
+          .catch(err => {
+            // send error
+            return callback(err, null)
+          })
+      }) // end catch
+  }
+
+  static addReview(review) {
+    RestaurantDB.addReview(review)
   }
 
 }

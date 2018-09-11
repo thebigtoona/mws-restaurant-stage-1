@@ -35,7 +35,7 @@ const fetchRestaurantFromURL = (callback) => {
   }
   const id = getParameterByName('id');
   if (!id) { // no id found in URL
-    error = 'No restaurant id in URL'
+    const error = 'No restaurant id in URL'
     callback(error, null);
   } else {
     RestaurantHelper.fetchRestaurantById(id, (error, restaurant) => {
@@ -93,7 +93,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
       fillReviewsHTML()
       return
     } else {
-      // console.log(reviews)
+      console.log(reviews)
       fillReviewsHTML(reviews)
     }
   })
@@ -126,9 +126,20 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
   // console.log(reviews)
   const container = document.getElementById('reviews-container');
+  const reviewContainerHeader = document.createElement('div')
   const title = document.createElement('h3');
+  const reviewSubmission = document.createElement('button')
+
+  reviewContainerHeader.setAttribute('id', 'reviews-heading-container')
+  container.appendChild(reviewContainerHeader);
+
   title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  reviewContainerHeader.appendChild(title)
+
+  reviewSubmission.setAttribute('id', 'submit-review')
+  reviewSubmission.setAttribute('aria-label', 'submit a review for this restaurant')
+  reviewSubmission.innerHTML = 'Submit a Review'
+  reviewContainerHeader.appendChild(reviewSubmission)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -140,7 +151,12 @@ const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
+
   container.appendChild(ul);
+
+  // add review submission html
+  addReviewSubmission()
+  cacheNewReview()
 }
 
 /**
@@ -257,5 +273,83 @@ function addRemoveFavorite(e) {
     })
   }
 } // end addRemoveFavorite()
+
+// get the information for a new review and cache that review for later
+const cacheNewReview = () => {
+
+// submit btn
+const reviewSubmit = document.getElementById('reviewSubmit');
+
+  // put together new review into an obj to fetch
+  const buildNewReview = (e) => {
+
+    // grab values of user input
+    const reviewName = document.getElementById('reviewName').value;
+    const reviewRating = document.getElementById('reviewRating').value;
+    const reviewComments = document.getElementById('reviewComments').value;
+
+    // new review obj
+    let review = {};
+
+    // add values
+    review.restaurant_id = self.restaurant.id;
+    review.name = reviewName;
+    review.rating = reviewRating;
+    review.comments = reviewComments;
+
+    // post request
+    fetch(ReviewHelper.REVIEWS_URL, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      redirect: 'follow',
+      mode: 'cors',
+      body: JSON.stringify(review),
+    }).then( response => {
+      return response.json()
+    }).catch( error => {
+      return `ERROR ${error}`;
+    }).then( newReview => {
+      console.log(newReview)
+      ReviewHelper.addReview(newReview)
+
+      // redirect back to page
+      window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+    })
+
+
+    e.preventDefault();
+  }
+
+  reviewSubmit.addEventListener('click', buildNewReview)
+}
+
+// add show/hide review form
+const addReviewSubmission = () => {
+  // review submission modal
+  const reviewBtn = document.getElementById('submit-review')
+  const close = document.querySelector('#modalClose')
+
+  // open Modal fn
+  const openModal = (e) => {
+    const modal = document.querySelector('.modal')
+    modal.style.display = 'block';
+    e.preventDefault()
+  }
+
+  // close modal fn
+  const closeModal = (e) => {
+    const modal = document.querySelector('.modal')
+    modal.style.display = 'none';
+    e.preventDefault()
+  }
+
+  // event listeners
+  reviewBtn.addEventListener('click', openModal)
+  close.addEventListener('click', closeModal)
+}
+
+
 
 document.addEventListener('click', addRemoveFavorite)
