@@ -50,13 +50,25 @@
   max-width: 1200px;
 }
 
-#reviews-container h3 {
+#reviews-heading-container {
+  min-height: 50px;
+  margin: 2rem 0;
+}
+
+#reviews-heading-container h3 {
   color: #155C8E;
   font-weight: 200;
-  font-family: 1.666rem/1.1 Arial,sans-serif;
+  // font-family: 1.666rem/1.1 Arial,sans-serif;
+  font-size: 1.6rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.1;
   letter-spacing: 0;
   margin: 1rem 0;
   text-transform: uppercase;
+
+  position: relative;
+  float: left;
+  left: 60px
 }
 
 #reviews-list {
@@ -120,17 +132,13 @@
 }
 
 #reviews-list .review-rating {
-  text-align: center;
-  padding: 6px 2px 4px 2px;
+
   margin-right: auto;
   margin-bottom: 15px;
-  background: #155C8E;
-  border-radius: 3px;
-  border: 1px solid #fff;
   width: 30%;
   text-transform: uppercase;
-  color: white;
-  font-weight: bold;
+  color: #155C8E;
+  font-weight: bolder;
 }
 
 
@@ -143,4 +151,18 @@
 #restaurant-hours td {
   color: #666;
   /* align-content: center; */
+}
+
+#submit-review {
+  background: #155C8E;
+  color: #fff;
+  padding: .5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #a9a9a9;
+  border-radius: 4px;
+
+  float: right;
+  position: relative;
+  right: 4.5rem;
+  top: .75rem;
 }

@@ -93,6 +93,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
       fillReviewsHTML()
       return
     } else {
+      console.log(reviews)
       fillReviewsHTML(reviews)
     }
   })
@@ -125,15 +126,20 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
   // console.log(reviews)
   const container = document.getElementById('reviews-container');
+  const reviewContainerHeader = document.createElement('div')
   const title = document.createElement('h3');
   const reviewSubmission = document.createElement('button')
+
+  reviewContainerHeader.setAttribute('id', 'reviews-heading-container')
+  container.appendChild(reviewContainerHeader);
+
   title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  reviewContainerHeader.appendChild(title)
 
   reviewSubmission.setAttribute('id', 'submit-review')
   reviewSubmission.setAttribute('aria-label', 'submit a review for this restaurant')
   reviewSubmission.innerHTML = 'Submit a Review'
-  container.appendChild(reviewSubmission)
+  reviewContainerHeader.appendChild(reviewSubmission)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -307,6 +313,9 @@ const reviewSubmit = document.getElementById('reviewSubmit');
     }).then( newReview => {
       console.log(newReview)
       ReviewHelper.addReview(newReview)
+
+      // redirect back to page
+      window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
     })
 
 
