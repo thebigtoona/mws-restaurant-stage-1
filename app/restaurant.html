@@ -88,6 +88,55 @@
   </footer>
   <!-- End footer -->
 
+  <!--  start modal -->
+  <div class="modal">
+
+   <form action="">
+     <div class="form-heading">
+       <button class="fa fa-close" id="modalClose">&times;</button>
+       <h3>Submit a Review</h3>
+       <p>Share your story with us!</p>
+     </div>
+     <fieldset>
+       <legend>Your information</legend>
+       <div class="d-flex">
+        <label for="reviewName">Name: </label>
+        <input type="text" id="reviewName" placeholder="" aria-label="Name">
+       </div>
+     </fieldset>
+     <fieldset>
+       <legend>Rate your experience</legend>
+
+       <div class="d-flex">
+         <label for="reviewRating">Rating: </label>
+         <select id="reviewRating">
+           <option value="1">1</option>
+           <option value="2">2</option>
+           <option value="3">3</option>
+           <option value="4">4</option>
+           <option value="5">5</option>
+         </select>
+       </div>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>Share details about your experience</legend>
+
+      <div class="d-flex">
+        <label for="reviewComments">Review Comments: </label>
+        <textarea id="reviewComments" cols="30" rows="10"></textarea>
+      </div>
+    </fieldset>
+
+     <fieldset>
+      <!-- <legend>Submit your review</legend> -->
+
+      <input aria-label="Submit Review" type="submit" value="Submit" id="reviewSubmit">
+    </fieldset>
+
+    </form> <!-- end form -->
+</div> <!-- end modal -->
 
   <!-- Main javascript file -->
   <script type="text/javascript" src="scripts/restaurant_info.js"></script>

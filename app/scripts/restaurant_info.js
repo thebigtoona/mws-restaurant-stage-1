@@ -93,7 +93,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
       fillReviewsHTML()
       return
     } else {
-      // console.log(reviews)
       fillReviewsHTML(reviews)
     }
   })
@@ -127,8 +126,16 @@ const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
   // console.log(reviews)
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
+  const reviewSubmission = document.createElement('button')
   title.innerHTML = 'Reviews';
   container.appendChild(title);
+
+  reviewSubmission.setAttribute('id', 'submit-review')
+  reviewSubmission.setAttribute('aria-label', 'submit a review for this restaurant')
+  reviewSubmission.innerHTML = 'Submit a Review'
+  container.appendChild(reviewSubmission)
+
+  addReviewSubmission()
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -257,5 +264,30 @@ function addRemoveFavorite(e) {
     })
   }
 } // end addRemoveFavorite()
+
+const addReviewSubmission = () => {
+  // review submission modal
+  const reviewBtn = document.getElementById('submit-review')
+  const close = document.querySelector('#modalClose')
+
+  // open Modal fn
+  const openModal = (e) => {
+    const modal = document.querySelector('.modal')
+    modal.style.display = 'block';
+    e.preventDefault()
+  }
+
+  const closeModal = (e) => {
+    const modal = document.querySelector('.modal')
+    modal.style.display = 'none';
+    e.preventDefault()
+  }
+
+  // event listeners
+  reviewBtn.addEventListener('click', openModal)
+  close.addEventListener('click', closeModal)
+}
+
+
 
 document.addEventListener('click', addRemoveFavorite)
