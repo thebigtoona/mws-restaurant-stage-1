@@ -6,7 +6,8 @@ class RestaurantDB {
     return idb.open('mws-restaurant-reviews', 2, upgradeDB => {
       switch (upgradeDB.oldVersion) {
         case 0:
-          upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'});
+          upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'})
+            .createIndex('byFavorite', 'is_favorite')
         case 1:
           upgradeDB.createObjectStore('favorites', {keyPath: 'id'});
         case 2:
