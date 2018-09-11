@@ -93,7 +93,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
       fillReviewsHTML()
       return
     } else {
-      console.log(reviews)
+      // console.log(reviews)
       fillReviewsHTML(reviews)
     }
   })
@@ -124,7 +124,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = ( reviews = self.restaurant.reviews ) => {
-  console.log(reviews)
+  // console.log(reviews)
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';

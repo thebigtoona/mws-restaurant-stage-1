@@ -27,8 +27,6 @@ class ReviewHelper extends RestaurantHelper {
           fetch(`${this.REVIEWS_BY_RESTAURANT(restaurantId)}`)
             .then(res => res.json())
             .then( reviews => {
-              console.log(typeof(reviews))
-              console.log(reviews)
               reviews.forEach(r => {
                 RestaurantDB.addReview(r)
               })

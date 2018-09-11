@@ -3,7 +3,8 @@ import RestaurantDB from './database/RestaurantDB'
 /**
  * setting variables
  */
-const cacheName = 'restaurant-reviews-v3'
+const cacheName = 'restaurant-reviews-v4'
+const imageCache = 'images-v1'
 const cachedAssets = [
   '/',
   'restaurant.html',
@@ -48,9 +49,31 @@ self.addEventListener('activate', event => {
  * checking cache for assets and serving from cache
  */
 self.addEventListener('fetch', event => {
-    event.respondWith(
-      caches.match(event.request).then( response =>
-        response || fetch(event.request)
+    if (event.request.url.includes('restaurant.html')) {
+      event.respondWith(
+        caches.match('restaurant.html').then(response => {
+          return response || fetch(event.request)
+        })
       )
-    )
+    }
+    else if (event.request.url.includes('images') && !event.request.url.includes('maps')) {
+      event.respondWith(
+        // match from cache
+        caches.match(event.request).then(response => {
+          return response || fetch(event.request).then(response => {
+            return caches.open(imageCache).then(cache => {
+              cache.put(event.request, response.clone())
+              return response || fetch(event.request)
+            })
+          })
+        })
+      )
+    }
+    else {
+      event.respondWith(
+        caches.match(event.request).then( response =>
+          response || fetch(event.request)
+        )
+      )
+    }
 })
