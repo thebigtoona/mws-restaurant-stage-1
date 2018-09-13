@@ -301,32 +301,36 @@ const reviewSubmit = document.getElementById('reviewSubmit');
       body: JSON.stringify(review),
     }).then( response => {
       console.log(response)
-      // response is ok status
-      if (response.ok) {
-
-        return response.json()
 
       // response is not ok status
-      } else {
-        console.log('not online... adding to pending queue')
-        // add to pending queue
-        ReviewHelper.addToPending({
-          url: ReviewHelper.REVIEWS_URL,
-          id: '' + (Math.random() * (1000-1) + 1) + '',
-          method: 'POST',
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          redirect: 'follow',
-          mode: 'cors',
-          body: JSON.stringify(review),
-        })
+      if (!response.ok || response.status !== 201) {
 
-        window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+
+          console.log('not online... adding to pending queue')
+          // add to pending queue
+          ReviewHelper.addToPending({
+            url: ReviewHelper.REVIEWS_URL,
+            id: '' + (Math.random() * (1000-1) + 1) + '',
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+            redirect: 'follow',
+            mode: 'cors',
+            body: JSON.stringify(review),
+          })
+
+          window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+
         return response.json()
+
+      // response is ok status
+      } else {
+
+        return response.json()
+
       }
     }).then( newReview => {
-        console.log(newReview)
 
         // add new review
         ReviewHelper.addReview(newReview)
