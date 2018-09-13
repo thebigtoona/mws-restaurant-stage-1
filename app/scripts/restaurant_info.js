@@ -300,23 +300,100 @@ const reviewSubmit = document.getElementById('reviewSubmit');
       mode: 'cors',
       body: JSON.stringify(review),
     }).then( response => {
-      return response.json()
-    }).catch( error => {
-      return `ERROR ${error}`;
-    }).then( newReview => {
-      console.log(newReview)
-      ReviewHelper.addReview(newReview)
 
-      // redirect back to page
-      window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
-    })
+      // response is not ok status
+      if (!response.ok || response.status !== 201) {
+
+
+          console.log('not online... adding to pending queue')
+          // add to pending queue
+          ReviewHelper.addToPending({
+            url: ReviewHelper.REVIEWS_URL,
+            id: '' + (Math.random() * (1000-1) + 1) + '',
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json; charset=utf-8",
+            },
+            redirect: 'follow',
+            mode: 'cors',
+            body: JSON.stringify(review),
+          })
+
+          window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+
+        return response.json()
+
+      // response is ok status
+      } else {
+
+        return response.json()
+
+      }
+    }).then( newReview => {
+
+        // add new review
+        ReviewHelper.addReview(newReview)
+
+        // redirect back to page
+        window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+      })
+
 
 
     e.preventDefault();
   }
 
-  reviewSubmit.addEventListener('click', buildNewReview)
+  // click event on the submit btn for the new reviews
+  reviewSubmit.addEventListener('click', (e) => {
+    // if service worker exists
+    if ('serviceWorker' in navigator) {
+      // attempt to register a sync event
+      navigator.serviceWorker.ready
+        .then(registration => registration.sync.register('send-reviews'))
+        .then(response => {
+          console.log(response)
+      })
+      buildNewReview(e);
+    // if no service worker exists
+    } else {
+      buildNewReview(e);
+    }
+  })
 }
+
+// focusTrap function for modal
+function focusTrap ( element ) {
+  const focusableElements = element.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select')
+  const firstFocusableEl = focusableEls[0];
+  const lastFocusableEl = focusableEls[focusableEls.length - 1];
+  const KEYCODE_TAB = 9;
+
+  element.addEventListener('keydown', (e) =>
+  {
+
+    if (e.key === 'Tab' || e.keyCode === KEYCODE_TAB)
+    {
+
+      if ( e.shiftKey )
+      {
+          if (document.activeElement === firstFocusableEl)
+          {
+              lastFocusableEl.focus();
+              e.preventDefault();
+          }
+      }
+      else
+      {
+          if (document.activeElement === lastFocusableEl)
+          {
+              firstFocusableEl.focus();
+              e.preventDefault();
+          }
+      }
+    }
+  });
+}
+
 
 // add show/hide review form
 const addReviewSubmission = () => {
@@ -326,15 +403,35 @@ const addReviewSubmission = () => {
 
   // open Modal fn
   const openModal = (e) => {
+    let isDialog = true
     const modal = document.querySelector('.modal')
-    modal.style.display = 'block';
+
+    // checking for polyfill on dialog element
+    if (!window.HTMLDialogElement) {
+      modal.classList.add('no-dialog')
+      isDialog = false
+    }
+
+    // test for dialog compatibilty
+    if (isDialog) {
+      modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
+
+    // set focus to first input in the modal
+    modal.querySelector("input").focus();
+
+    // trap focus in the modal
+    focusTrap(modal);
+
     e.preventDefault()
   }
 
   // close modal fn
   const closeModal = (e) => {
     const modal = document.querySelector('.modal')
-    modal.style.display = 'none';
+    modal.close()
     e.preventDefault()
   }
 

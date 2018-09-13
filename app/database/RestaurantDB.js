@@ -3,7 +3,7 @@ import idb from 'idb';
 class RestaurantDB {
 
   static openDatabase() {
-    return idb.open('mws-restaurant-reviews', 1, upgradeDB => {
+    return idb.open('mws-restaurant-reviews', 2, upgradeDB => {
       switch (upgradeDB.oldVersion) {
         case 0:
           upgradeDB.createObjectStore('restaurant-data', {keyPath: 'id'})
@@ -11,6 +11,8 @@ class RestaurantDB {
         case 1:
           upgradeDB.createObjectStore('reviews', {keyPath: 'id'})
             .createIndex('byRestaurant', 'restaurant_id')
+        case 2:
+          upgradeDB.createObjectStore('pendingReviews', {keyPath: 'id'})
       }
     });
   }
@@ -42,7 +44,6 @@ class RestaurantDB {
   }
 
 
-
   static updateRestaurantData(value) {
     this.openDatabase()
       .then(db => {
@@ -72,6 +73,29 @@ class RestaurantDB {
         return tx.complete
       })
   }
+
+  // get pending items
+  static getPending() {
+    return this.openDatabase()
+      .then(db => {
+        return db.transaction('pendingReviews')
+          .objectStore('pendingReviews')
+          .getAll()
+      })
+  }
+
+  // add to pending db
+  static addToPending(request) {
+    return this.openDatabase()
+      .then(db => {
+        const tx = db.transaction('pendingReviews', 'readwrite')
+          .objectStore('pendingReviews')
+          .put(request)
+
+          return tx.complete
+      })
+  }
+
 }
 
 
