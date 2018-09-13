@@ -362,6 +362,7 @@ const reviewSubmit = document.getElementById('reviewSubmit');
 }
 
 // focusTrap function for modal
+// credit - blog on focus trapping elements with js: https://hiddedevries.nl/en/blog/2017-01-29-using-javascript-to-trap-focus-in-an-element
 function focusTrap ( element ) {
   const focusableElements = element.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select')
   const firstFocusableEl = focusableEls[0];
