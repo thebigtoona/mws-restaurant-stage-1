@@ -93,6 +93,12 @@ section {
 }
 
 /*  Media Queries */
+@mixin mediaXs {
+	@media screen and (max-width: 400px) {
+		@content;
+	}
+}
+
 @mixin mediaSm {
   @media screen and (max-width: 849px) {
     @content;

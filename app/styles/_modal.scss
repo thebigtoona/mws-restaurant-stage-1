@@ -17,7 +17,6 @@ $modal-bg-color: rgba(0,0,0,0.8);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding-top: 100px;
   width: 100%;
   height: 100%;
   background-color: $modal-bg-color;
@@ -32,9 +31,7 @@ $modal-bg-color: rgba(0,0,0,0.8);
 }
 
 .form-heading {
-  max-width: 700px;
   background-color: #fff;
-  margin: 0 auto;
   padding: .5rem 0;
   border-bottom: 1px solid #a9a9a9;
   border-radius: 4px;
@@ -70,8 +67,14 @@ $modal-bg-color: rgba(0,0,0,0.8);
 }
 // the form
 form {
-  max-width: 700px;
-  margin: 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  min-width: 200px;
+  max-width: 500px;
+  min-height: 500px;
   font-family: Arial, sans-serif;
   font-weight: 400;
   color: $form-font-color;

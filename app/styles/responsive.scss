@@ -1,5 +1,33 @@
 @import 'config';
 
+@include mediaXs {
+  dialog {
+    overflow-y: auto;
+    form {
+      min-height: 100%;
+      .form-heading {
+        h3 {
+          font-size: .95rem;
+        }
+      }
+      .form-heading, fieldset {
+        padding: .5rem !important;
+        legend {
+          padding: .85rem 0;
+        }
+      }
+      fieldset {
+        input {
+          padding: .3rem;
+        }
+      }
+    }
+  }
+  #reviewSubmit {
+    margin-top: 10px;
+  }
+}
+
 @include mediaMd {
   #restaurants-list {
     display: grid;
