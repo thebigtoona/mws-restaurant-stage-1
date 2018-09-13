@@ -54,6 +54,10 @@ class ReviewHelper extends RestaurantHelper {
     RestaurantDB.addReview(review)
   }
 
+  static addToPending(request) {
+    RestaurantDB.addToPending(request)
+  }
+
 }
 
 export { ReviewHelper as default }

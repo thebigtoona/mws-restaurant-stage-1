@@ -77,3 +77,35 @@ self.addEventListener('fetch', event => {
       )
     }
 })
+
+// retry sending reviews from the db
+const sendReviews = (reviews) => {
+  // send reviews function here
+  RestaurantDB.getPending()
+    .then(pendingItems => {
+      pendingItems.forEach( item => {
+        fetch(item.url, {
+          method: item.method,
+          headers: item.headers,
+          redirect: item.redirect,
+          mode: item.mode,
+          body: item.body
+        })
+          .then(response => {
+            if (response.ok) {
+              RestaurantDB.delete(item.id)
+            }
+            return response.json()
+          })
+          .then(json => console.log(json))
+          .catch(error => console.log(error))
+      })
+    })
+}
+
+// sync offline reviews
+self.addEventListener('sync', function(event) {
+  if (event.tag == 'send-reviews') {
+    event.waitUntil(sendReviews());
+  }
+});

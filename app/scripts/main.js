@@ -315,7 +315,7 @@ const registerWorker = () => {
   if('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('/sw.js')
-             .then(() => console.log("Service Worker Registered"))
+             .then((registration) => console.log("Service Worker Registered: " + registration))
              .catch(err => console.log(err));
   }
 }

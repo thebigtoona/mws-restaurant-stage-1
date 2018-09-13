@@ -300,22 +300,62 @@ const reviewSubmit = document.getElementById('reviewSubmit');
       mode: 'cors',
       body: JSON.stringify(review),
     }).then( response => {
-      return response.json()
-    }).catch( error => {
-      return `ERROR ${error}`;
-    }).then( newReview => {
-      console.log(newReview)
-      ReviewHelper.addReview(newReview)
+      console.log(response)
+      // response is ok status
+      if (response.ok) {
 
-      // redirect back to page
-      window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
-    })
+        return response.json()
+
+      // response is not ok status
+      } else {
+        console.log('not online... adding to pending queue')
+        // add to pending queue
+        ReviewHelper.addToPending({
+          url: ReviewHelper.REVIEWS_URL,
+          id: '' + (Math.random() * (1000-1) + 1) + '',
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          redirect: 'follow',
+          mode: 'cors',
+          body: JSON.stringify(review),
+        })
+
+        window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+        return response.json()
+      }
+    }).then( newReview => {
+        console.log(newReview)
+
+        // add new review
+        ReviewHelper.addReview(newReview)
+
+        // redirect back to page
+        window.location.href = `http://localhost:9000/restaurant.html?id=${self.restaurant.id}`
+      })
+
 
 
     e.preventDefault();
   }
 
-  reviewSubmit.addEventListener('click', buildNewReview)
+  // click event on the submit btn for the new reviews
+  reviewSubmit.addEventListener('click', (e) => {
+    // if service worker exists
+    if ('serviceWorker' in navigator) {
+      // attempt to register a sync event
+      navigator.serviceWorker.ready
+        .then(registration => registration.sync.register('send-reviews'))
+        .then(response => {
+          console.log(response)
+      })
+      buildNewReview(e);
+    // if no service worker exists
+    } else {
+      buildNewReview(e);
+    }
+  })
 }
 
 // add show/hide review form
@@ -346,3 +386,5 @@ const addReviewSubmission = () => {
 
 
 document.addEventListener('click', addRemoveFavorite)
+
+// console.log()
