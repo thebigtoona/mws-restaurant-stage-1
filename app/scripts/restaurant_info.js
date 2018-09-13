@@ -403,15 +403,35 @@ const addReviewSubmission = () => {
 
   // open Modal fn
   const openModal = (e) => {
+    let isDialog = true
     const modal = document.querySelector('.modal')
-    modal.style.display = 'block';
+
+    // checking for polyfill on dialog element
+    if (!window.HTMLDialogElement) {
+      modal.classList.add('no-dialog')
+      isDialog = false
+    }
+
+    // test for dialog compatibilty
+    if (isDialog) {
+      modal.showModal();
+    } else {
+      modal.setAttribute('open', '');
+    }
+
+    // set focus to first input in the modal
+    modal.querySelector("input").focus();
+
+    // trap focus in the modal
+    focusTrap(modal);
+
     e.preventDefault()
   }
 
   // close modal fn
   const closeModal = (e) => {
     const modal = document.querySelector('.modal')
-    modal.style.display = 'none';
+    modal.close()
     e.preventDefault()
   }
 
