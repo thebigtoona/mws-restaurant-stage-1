@@ -300,7 +300,6 @@ const reviewSubmit = document.getElementById('reviewSubmit');
       mode: 'cors',
       body: JSON.stringify(review),
     }).then( response => {
-      console.log(response)
 
       // response is not ok status
       if (!response.ok || response.status !== 201) {
@@ -362,6 +361,40 @@ const reviewSubmit = document.getElementById('reviewSubmit');
   })
 }
 
+// focusTrap function for modal
+function focusTrap ( element ) {
+  const focusableElements = element.querySelectorAll('a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select')
+  const firstFocusableEl = focusableEls[0];
+  const lastFocusableEl = focusableEls[focusableEls.length - 1];
+  const KEYCODE_TAB = 9;
+
+  element.addEventListener('keydown', (e) =>
+  {
+
+    if (e.key === 'Tab' || e.keyCode === KEYCODE_TAB)
+    {
+
+      if ( e.shiftKey )
+      {
+          if (document.activeElement === firstFocusableEl)
+          {
+              lastFocusableEl.focus();
+              e.preventDefault();
+          }
+      }
+      else
+      {
+          if (document.activeElement === lastFocusableEl)
+          {
+              firstFocusableEl.focus();
+              e.preventDefault();
+          }
+      }
+    }
+  });
+}
+
+
 // add show/hide review form
 const addReviewSubmission = () => {
   // review submission modal
@@ -390,5 +423,3 @@ const addReviewSubmission = () => {
 
 
 document.addEventListener('click', addRemoveFavorite)
-
-// console.log()
